@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actavia Project</title>
+    <link rel="stylesheet" href="Dashboard.css">
+</head>
+<body>
+    
+<div id="loading-overlay" class="loading-hidden">
+    <div class="spinner"></div>
+    <p>Running Program</p>
+</div>
+<div id="feedback-overlay" class="feedback-overlay" onclick="closeFeedback()">
+    <div class="feedback-card">
+        <div id="feedback-icon" class="feedback-icon"></div>
+        <h2 id="feedback-status"></h2>
+        <p style="color: #666; font-size: 12px;">Tap anywhere to continue</p>
+    </div>
+</div>
+<div class="menu-container">
+    <div class="menu-welcome">
+        <img src="Acta_Learning-removebg-preview.png" alt="" style="width: 100%;">
+    </div>
+    <div class="home-feature" onclick="showPage('home-page')">Home</div>
+    <div class="exercise-feature" onclick="showPage('exercise-page')">Exercise</div>
+    <div class="test-feature" onclick="showPage('test-page')">Test</div>
+    <div class="report-feature" onclick="showPage('report-page')">Report</div>
+    <div class="help-feature" onclick="showPage('help-page')">Help</div>
+</div>
+
+<div class="main-content">
+    <div id="home-page" class="page active">
+        <div class="page-profile-header">
+            <div class="profile-left-group">
+            <img src="pfp-user.jpg" alt="Profile" class="header-profile-pic">
+            <div class="header-user-info">
+                <span class="header-user-name">Carbonida Two</span>
+                <span class="header-user-status">Beta Tester</span>
+            </div>
+        </div>
+        <div class="coin-container-right">
+            <img src="acta coins.png" alt="" class="coin-icon">
+            <span class="coin-value">9.999</span>
+            <img src="acta gems.png" alt="" class="gem-icon">
+            <span class="gem-value">999</span>
+        </div>
+    </div>
+        <h1>Welcome to Home</h1>
+        <p>Ini adalah konten halaman Home.</p>
+    </div>
+
+    <div id="exercise-page" class="page">
+        <div class="page-profile-header">
+            <div class="profile-left-group">
+            <img src="pfp-user.jpg" alt="Profile" class="header-profile-pic">
+            <div class="header-user-info">
+                <span class="header-user-name">Carbonida Two</span>
+                <span class="header-user-status">Beta Tester</span>
+            </div>
+        </div>
+        <div class="coin-container-right">
+            <img src="acta coins.png" alt="" class="coin-icon">
+            <span class="coin-value">9.999</span>
+            <img src="acta gems.png" alt="" class="gem-icon">
+            <span class="gem-value">999</span>
+        </div>
+    </div>
+        <h1 class="exercise-title"><span class="exercise-title-colored">Exercise</span> Page</h1>
+        <p class="exercise-title-desc">Please select these exercise to upgrade your skill, agent.</p>
+        <div class="exercise-grid">
+            <div class="exercise-card quiz-feature" onclick="showPage('material-selection-page')" style="cursor: pointer;">
+                <img src="MC-icon-feature.png" alt="" class="exercise-icon">
+                <p style="font-size: 13px;">Quiz</p>
+            </div>
+            
+            <div class="exercise-card case-feature" onclick="showPage('case-detail-page')" style="cursor: pointer;">
+                <img src="SC-icon-feature.png" alt="" class="exercise-icon">
+                <p style="font-size: 13px;">Study Case</p>
+            </div>
+            <div class="exercise-card cycle-feature" onclick="showPage('cycle-detail-page')" style="cursor: pointer;">
+                <img src="AC-icon-feature.png" alt="" class="exercise-icon">
+                <p style="font-size: 13px;">Accounting Cycle</p>
+            </div>
+        </div>
+    </div>
+    <div id="material-selection-page" class="page">
+        <button onclick="showPage('exercise-page')" class="startbutton"> Kembali</button>
+        <h1 class="quiz-title">Select Material</h1>
+        <p class="quiz-title-desc">Choose the accounting topic you want to master today.</p>
+
+        <div class="exercise-grid">
+            <div class="exercise-card" onclick="selectMaterial('Basics of Accounting')">
+                <img src="basicsof-acc-icon.png" alt="" class="quiz-material-icon" >
+                <p>Basics of Accounting</p>
+            </div>
+            <div class="exercise-card" onclick="selectMaterial('Cost Accounting')">
+                <img src="cost-acc-icon.png" alt="" class="quiz-material-icon">
+                <p>Cost Accounting</p>
+            </div>
+            <div class="exercise-card" onclick="selectMaterial('Financial Accounting')">
+                <p>Financial Accounting</p>
+            </div>
+            <div class="exercise-card" onclick="selectMaterial('Trading Accounting')">
+                <p>Trading Accounting</p>
+            </div>
+            <div class="exercise-card" onclick="selectMaterial('Tax Accounting')">
+                <p>Tax Accounting</p>
+            </div>
+            <div class="exercise-card" onclick="selectMaterial('Government Accounting')">
+                <p>Government Accounting</p>
+            </div>
+        </div>
+    </div>
+    <div id="quiz-detail-page" class="page">
+        <button onclick="showPage('exercise-page')" class="startbutton"> Kembali</button>
+        <h1 class="quiz-title">Quiz Room</h1>
+        <p class="quiz-title-desc">Please choose your difficulty, number of question and learning material.</p>
+        
+        <div class="difficulty-title"><p>Difficulty</p></div>
+        <div class="class-type">
+            <span class="easy-class" onclick="selectDifficulty(this)">Easy</span>
+            <span class="medium-class" onclick="selectDifficulty(this)">Medium</span>
+            <span class="hard-class" onclick="selectDifficulty(this)">Hard</span>
+        </div>
+    
+        <div class="NoQ-title"><p>Number of Question</p></div>
+        <div class="NoQ-type">
+            <span class="a-quest" onclick="selectNoQ(this)">5</span>
+            <span class="b-quest" onclick="selectNoQ(this)">10</span>
+            <span class="c-quest" onclick="selectNoQ(this)">15</span>
+        </div>
+
+        <div class="NoQ-title"><p>Sub Material</p></div>
+        <div id="sub-material-container" class="sub-material-grid"></div>
+
+        <div class="play-section-wrapper">
+            <div class="energy-container">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="fingerprint-icon.png" class="energy-icon" style="width: 20px;">
+                    <span id="energy-count" class="energy-text" style="font-weight: bold; color: #007bff;">5/5</span>
+                </div>
+                <div class="energy-info-group">
+                    <span id="energy-refill-timer" class="energy-timer" style="font-size: 10px; color: #666;">Full</span>
+                </div>
+            </div>
+            
+            <button id="main-play-btn" class="play-button" onclick="startQuiz()">
+                PLAY &rarr;
+            </button>
+        </div>
+    </div>
+
+    <div id="quiz-running-page" class="page">
+        <div class="page-profile-header">
+            <span id="quiz-progress" style="font-weight: bold; color: #007bff;">Question 1 of 5</span>
+            <span id="display-id" style="font-size: 11px; color: #999; font-family: monospace;">ID: ---</span>
+            <span id="quiz-timer">00:00</span>
+        </div>
+        <div class="quiz-container" style="margin-top: 20px;">
+            <h3 id="display-question" style="margin-bottom: 20px;">Loading Question...</h3>
+            <div id="options-container" class="options-column">
+                </div>
+        </div>
+        <div class="play-container" style="margin-top: 20px; text-align: right;">
+            <button id="next-btn" class="play-button" onclick="nextQuestion()" style="display: none;">Next &rarr;</button>
+        </div>
+    </div>
+
+    <div id="result-page" class="page">
+        <h1 class="exercise-title-colored">Mission Accomplished!</h1>
+        <div class="exercise-grid">
+            <div class="exercise-card"><p>Correct</p><h2 id="stat-correct" style="color: green;">0</h2></div>
+            <div class="exercise-card"><p>Wrong</p><h2 id="stat-wrong" style="color: red;">0</h2></div>
+            <div class="exercise-card" style="grid-column: span 2;"><p>Final Score</p><h1 id="stat-score">0</h1></div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button onclick="showPage('exercise-page')" class="startbutton" style="flex:1">Back to Menu</button>
+            <button onclick="renderReview()" class="startbutton" style="flex:1; background-color: #007bff; color: white;">Review Answers</button>
+        </div>
+        <div id="review-section" style="margin-top: 30px;"></div>
+        <div style="text-align: right; margin-top: 30px;">
+            <button class="play-button" onclick="startQuiz()">PLAY &rarr;</button>
+        </div>
+    </div>
+    <div id="case-detail-page" class="page">
+        <button onclick="showPage('exercise-page')" class="startbutton"> Kembali</button>
+        <h1>Study Case Room</h1>
+        <p>Daftar kasus analisis akan muncul di sini.</p>
+    </div>
+
+    <div id="cycle-detail-page" class="page">
+        <button onclick="showPage('exercise-page')" class="startbutton"> Kembali</button>
+        <h1>Accounting Cycle</h1>
+        <p>Daftar kasus analisis akan muncul di sini.</p>
+    </div>
+    <div id="test-page" class="page">
+        <div class="page-profile-header">
+            <div class="profile-left-group">
+            <img src="pfp-user.jpg" alt="Profile" class="header-profile-pic">
+            <div class="header-user-info">
+                <span class="header-user-name">Carbonida Two</span>
+                <span class="header-user-status">Beta Tester</span>
+            </div>
+        </div>
+        <div class="coin-container-right">
+            <img src="acta coins.png" alt="" class="coin-icon">
+            <span class="coin-value">9.999</span>
+            <img src="acta gems.png" alt="" class="gem-icon">
+            <span class="gem-value">999</span>
+        </div>
+    </div>
+        <h1>Test Page</h1>
+        <p>Selesaikan ujian Anda untuk mendapatkan sertifikat.</p>
+    </div>
+
+    <div id="reportt-page" class="page">
+        <div class="page-profile-header">
+            <div class="profile-left-group">
+            <img src="pfp-user.jpg" alt="Profile" class="header-profile-pic">
+            <div class="header-user-info">
+                <span class="header-user-name">Carbonida Two</span>
+                <span class="header-user-status">Beta Tester</span>
+            </div>
+        </div>
+        <div class="coin-container-right">
+            <img src="acta coins.png" alt="" class="coin-icon">
+            <span class="coin-value">9.999</span>
+            <img src="acta gems.png" alt="" class="gem-icon">
+            <span class="gem-value">999</span>
+        </div>
+    </div>
+    <div id="report-page" class="page">
+        <div class="page-profile-header">
+            </div>
+        <h1>About Acta Learning</h1>
+        <p>Acta Learning adalah platform edukasi akuntansi masa depan untuk para agen profesional.</p>
+    </div>
+
+    <div id="help-page" class="page">
+        <div class="page-profile-header">
+            </div>
+        <h1>Help & Support</h1>
+        <p>Ada kendala? Hubungi tim support kami di: <strong>actavia.project@gmail.com</strong></p>
+        <div class="exercise-card">
+            <p>FAQ: Cara mendapatkan koin?</p>
+            <span>Selesaikan kuis dengan skor di atas 80!</span>
+        </div>
+    </div>
+</div>
+
+<div id="welcomeModal" class="modal-bg">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2 style="color: rgb(0, 98, 255);">Caution!</h2>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 14px;">Hi, our agent. This project is early access (Beta Version) so you can explore our feature for free. Don't forget to report any bug or error to our email actavia.project.gmail.com. That's all, thank you!.</p>
+        </div>
+        <button id="closeBtn" class="close-btn">Agree</button>
+    </div>
+</div>
+
+<script src="Quiz-BOA.js"></script>
+<script>
+// ==========================================
+// 1. VARIABEL GLOBAL & STATE
+// ==========================================
+let selectedMaterialGlobal = "";
+let currentQuestions = [];
+let userAnswers = [];
+let currentQuestionIndex = 0;
+let quizTimerInterval; 
+let totalSeconds = 0;
+let timePerQuestion = []; // UNTUK STATISTIK BARU
+let lastTimestamp = 0;    // UNTUK STATISTIK BARU
+
+const MAX_ENERGY = 5;
+const REFILL_TIME = 6 * 60; 
+let energy = parseInt(localStorage.getItem('agent_energy')) || MAX_ENERGY;
+let lastRefillTime = parseInt(localStorage.getItem('last_refill_time')) || Date.now();
+
+const quizDatabase = {
+    'Basics of Accounting': ['Accounting Equation', 'Journal Entry', 'Ledger', 'Trial Balance','Adjustment','Worksheet', 'Financial Statement'],
+    'Cost Accounting': ['Material Cost', 'Labor Cost', 'Overhead'],
+    'Financial Accounting': ['Balance Sheet', 'Income Statement', 'Cash Flow'],
+    'Trading Accounting': ['Inventory', 'Purchase & Sales', 'Cost of Goods Sold'],
+    'Tax Accounting': ['VAT (PPN)', 'Income Tax', 'Tax Report'],
+    'Government Accounting': ['Public Fund', 'Budgeting', 'State Assets']
+};
+
+// ==========================================
+// 2. SISTEM NAVIGASI & MODAL AWAL
+// ==========================================
+function showPage(pageId) {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.remove('loading-hidden');
+
+    setTimeout(() => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const target = document.getElementById(pageId);
+        if (target) target.classList.add('active');
+
+        document.querySelectorAll('.menu-container div').forEach(item => {
+            const action = item.getAttribute('onclick');
+            item.classList.remove('active');
+            if (action && action.includes(pageId)) item.classList.add('active');
+        });
+
+        const exerciseSubs = ['material-selection-page', 'quiz-detail-page', 'case-detail-page', 'cycle-detail-page', 'quiz-running-page', 'result-page'];
+        if (exerciseSubs.includes(pageId)) {
+            document.querySelector('.exercise-feature').classList.add('active');
+        }
+        overlay.classList.add('loading-hidden');
+    }, 300);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const hasSeenWarning = localStorage.getItem('seenWarning');
+    if (!hasSeenWarning) document.getElementById('welcomeModal').style.display = 'flex';
+    
+    document.getElementById('closeBtn').onclick = () => {
+        document.getElementById('welcomeModal').style.display = 'none';
+        localStorage.setItem('seenWarning', 'true');
+    };
+    updateEnergySystem();
+    setInterval(updateEnergySystem, 1000);
+});
+
+// ==========================================
+// 3. LOGIKA SELEKSI
+// ==========================================
+function selectMaterial(name) {
+    selectedMaterialGlobal = name;
+    const subCont = document.getElementById('sub-material-container');
+    subCont.innerHTML = "";
+    (quizDatabase[name] || []).forEach(sub => {
+        const div = document.createElement('div');
+        div.className = 'sub-item';
+        div.innerText = sub;
+        div.onclick = function() {
+            const activeCount = subCont.querySelectorAll('.sub-item.active').length;
+            if (activeCount >= 5 && !this.classList.contains('active')) {
+                alert("Maksimal 5 sub-materi!"); return;
+            }
+            this.classList.toggle('active');
+        };
+        subCont.appendChild(div);
+    });
+    showPage('quiz-detail-page');
+}
+
+function selectDifficulty(el) {
+    document.querySelectorAll('.class-type span').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function selectNoQ(el) {
+    document.querySelectorAll('.NoQ-type span').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+}
+
+// ==========================================
+// 4. CORE ENGINE KUIS
+// ==========================================
+function startTimer() {
+    totalSeconds = 0;
+    clearInterval(quizTimerInterval);
+    quizTimerInterval = setInterval(() => {
+        totalSeconds++;
+        const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+        const secs = String(totalSeconds % 60).padStart(2, '0');
+        document.getElementById('quiz-timer').innerText = `${mins}:${secs}`;
+    }, 1000);
+}
+
+function startQuiz() {
+    const diff = document.querySelector('.class-type .active')?.innerText;
+    const noqText = document.querySelector('.NoQ-type .active')?.innerText;
+    const subs = document.querySelectorAll('#sub-material-container .sub-item.active');
+
+    if (!diff || !noqText || subs.length === 0) {
+        alert("Lengkapi pengaturan kuis!"); return;
+    }
+    if (energy <= 0) { alert("Energi habis!"); return; }
+
+    energy--;
+    localStorage.setItem('agent_energy', energy);
+    
+    let totalNeeded = parseInt(noqText);
+    let pool = questionDatabase.filter(q => 
+        q.difficulty === diff && 
+        q.material === selectedMaterialGlobal &&
+        Array.from(subs).map(s => s.innerText).includes(q.sub)
+    );
+
+    if (pool.length < totalNeeded) {
+        alert("Soal tidak mencukupi!"); energy++; return;
+    }
+
+    currentQuestions = pool.sort(() => 0.5 - Math.random()).slice(0, totalNeeded);
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    timePerQuestion = []; // Reset statistik waktu per soal
+    
+    startTimer();
+    showPage('quiz-running-page');
+    renderQuestion();
+}
+
+function renderQuestion() {
+    lastTimestamp = totalSeconds; // Catat detik ke berapa soal muncul
+    const q = currentQuestions[currentQuestionIndex];
+    document.getElementById('display-id').innerText = `ID: ${q.id}`;
+    document.getElementById('quiz-progress').innerText = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+    document.getElementById('display-question').innerText = q.question;
+    document.getElementById('next-btn').style.display = "none";
+
+    const optCont = document.getElementById('options-container');
+    optCont.innerHTML = "";
+
+    let shuffled = q.options.map((t, i) => ({t, i})).sort(() => 0.5 - Math.random());
+    shuffled.forEach((obj, idx) => {
+        const div = document.createElement('div');
+        div.className = 'option-item';
+        div.innerText = `${String.fromCharCode(65 + idx)}. ${obj.t}`;
+        div.onclick = () => {
+            userAnswers[currentQuestionIndex] = obj.i;
+            document.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
+            div.classList.add('selected');
+            document.getElementById('next-btn').style.display = "block";
+        };
+        optCont.appendChild(div);
+    });
+}
+
+// ==========================================
+// 5. FEEDBACK & RESULT
+// ==========================================
+function nextQuestion() {
+    // Hitung durasi soal ini
+    const duration = totalSeconds - lastTimestamp;
+    timePerQuestion.push(duration);
+
+    const q = currentQuestions[currentQuestionIndex];
+    const isCorrect = userAnswers[currentQuestionIndex] === q.answer;
+    
+    const overlay = document.getElementById('feedback-overlay');
+    const icon = document.getElementById('feedback-icon');
+    const status = document.getElementById('feedback-status');
+
+    overlay.style.display = "flex";
+    if (isCorrect) {
+        icon.innerText = "✅"; status.innerText = "Correct!"; status.style.color = "#28a745";
+    } else {
+        icon.innerText = "❌"; status.innerText = "Wrong!"; status.style.color = "#dc3545";
+    }
+}
+
+function closeFeedback() {
+    document.getElementById('feedback-overlay').style.display = "none";
+    if (currentQuestionIndex < currentQuestions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+    } else {
+        finishQuiz();
+    }
+}
+
+function finishQuiz() {
+    clearInterval(quizTimerInterval);
+    const timeSpentStr = document.getElementById('quiz-timer').innerText;
+    
+    let correct = 0;
+    currentQuestions.forEach((q, i) => { if (userAnswers[i] === q.answer) correct++; });
+    const score = Math.round((correct / currentQuestions.length) * 100);
+
+    // LOGIKA STATISTIK BARU
+    const totalMinutes = totalSeconds / 60;
+    const speed = (currentQuestions.length / totalMinutes).toFixed(2);
+    const fastest = Math.min(...timePerQuestion);
+
+    document.getElementById('stat-correct').innerText = correct;
+    document.getElementById('stat-wrong').innerText = currentQuestions.length - correct;
+    document.getElementById('stat-score').innerText = score;
+
+    // Render Grid Statistik
+    let resultPage = document.getElementById('result-page');
+    let detailGrid = document.getElementById('stats-detail-grid');
+    if(!detailGrid) {
+        detailGrid = document.createElement('div');
+        detailGrid.id = 'stats-detail-grid';
+        detailGrid.className = 'stats-detail-grid';
+        resultPage.querySelector('.exercise-grid').after(detailGrid);
+    }
+
+    detailGrid.innerHTML = `
+        <div class="stat-box">
+            <span class="stat-label">Time</span>
+            <span class="stat-value">${timeSpentStr}</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">Speed</span>
+            <span class="stat-value">${speed} Q/m</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">Fastest</span>
+            <span class="stat-value">${fastest}s</span>
+        </div>
+    `;
+
+    showPage('result-page');
+}
+
+function renderReview() {
+    const cont = document.getElementById('review-section');
+    cont.innerHTML = "<h3>Review Details</h3>";
+    currentQuestions.forEach((q, i) => {
+        const isCorrect = userAnswers[i] === q.answer;
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.style.borderLeft = `5px solid ${isCorrect ? '#28a745' : '#dc3545'}`;
+        card.innerHTML = `
+            <p><strong>${i+1}. ${q.question}</strong></p>
+            <p>Your: <span style="color:${isCorrect?'green':'red'}">${q.options[userAnswers[i]]||'Empty'}</span> | Correct: <span style="color:green">${q.options[q.answer]}</span></p>
+            <div class="explanation-box"><strong>Explanation:</strong> ${q.explanation}</div>
+        `;
+        cont.appendChild(card);
+    });
+}
+
+// ==========================================
+// 6. ENERGY SYSTEM
+// ==========================================
+function updateEnergySystem() {
+    const now = Date.now();
+    if (energy < MAX_ENERGY) {
+        const passed = Math.floor((now - lastRefillTime) / 1000);
+        if (passed >= REFILL_TIME) {
+            const regen = Math.floor(passed / REFILL_TIME);
+            energy = Math.min(MAX_ENERGY, energy + regen);
+            lastRefillTime += regen * REFILL_TIME * 1000;
+            localStorage.setItem('agent_energy', energy);
+            localStorage.setItem('last_refill_time', lastRefillTime);
+        }
+    } else { lastRefillTime = now; }
+    renderEnergyUI();
+}
+
+function renderEnergyUI() {
+    const energyText = document.getElementById('energy-count');
+    const timerText = document.getElementById('energy-refill-timer');
+    if(!energyText) return;
+    energyText.innerText = `${energy}/${MAX_ENERGY}`;
+    if (energy < MAX_ENERGY) {
+        const remaining = REFILL_TIME - Math.floor((Date.now() - lastRefillTime) / 1000);
+        const m = Math.floor(remaining / 60);
+        const s = remaining % 60;
+        timerText.innerText = `+1 in ${m}:${s < 10 ? '0' : ''}${s}`;
+    } else { timerText.innerText = "Full"; }
+    document.getElementById('main-play-btn').disabled = (energy <= 0);
+}
+</script>
+
+</body>
+</html>
