@@ -60,7 +60,7 @@ const questionDatabase = [
         options: ["Aset dan Modal bertambah sebesar Rp 1.500.000", "Aset bertambah sebesar 1.500.000, modal berkurang sebesar Rp 1.500.000", "Aset bertambah sebesar 1.500.000, kewajiban berkurang sebesar Rp 1.500.000", "Kewajiban bertambah sebesar 1.500.000, modal berkurang sebesar Rp 1.500.000", "Modal bertambah sebesar 1.500.000"],
         answer: 0,
         explanation: "Kas adalah akun harta(aset), sehingga menanamkan modal berupa kas akan menyebabkan kenaikan Aset. Disisi lain modal bertambah karena Pak Erwin menanamkan modal kepada usahanya."
-    },
+    }
     // Tambahkan ribuan soal lagi di sini dengan format yang sama
 ];
 
