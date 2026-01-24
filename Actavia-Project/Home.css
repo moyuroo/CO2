@@ -1,0 +1,179 @@
+body {
+    font-family: Cascadia Code,Cascadia Mono,monospace;
+}
+.startbutton {
+    color: rgb(255, 255, 255);
+    font-family: Cascadia Code,Cascadia Mono,monospace;
+    background-color: rgb(0, 98, 255);
+    font-size: medium;
+    padding: 8px;
+    border: 0cap;
+    font-size: 14px;
+}
+.startbutton-b {
+    display: none; /* Sembunyikan secara default di Laptop/PC */
+    color: rgb(255, 255, 255);
+    font-family: Cascadia Code, Cascadia Mono, monospace;
+    background-color: rgb(0, 98, 255);
+    padding: 8px;
+    border: 0;
+    font-size: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.startbutton:hover,.startbutton-b:hover {
+    transition: 0.5s all ease;
+    font-weight: bold;
+    background-color: rgb(191, 0, 255);
+}
+.startbutton:active,.startbutton-b:active {
+    background-color: rgb(104, 0, 139);
+}
+.cont-container {
+    display: flex;         /* Membuat elemen di dalamnya berjejer ke samping */
+    align-items: center;   /* Membuat teks dan gambar sejajar secara vertikal di tengah */
+    gap: 20px;             /* Memberi jarak antara gambar dan teks */
+    padding-left: 1cm;
+    padding-right: 1cm;
+    padding-top: 1cm;
+    flex-wrap: wrap;       /* Supaya teks pindah ke bawah jika layar HP (responsif) */
+}
+.txt-cont {
+    flex: 1;
+    min-width: 300px;
+}
+.title-desc {
+    flex: 1;               /* Membuat teks mengisi sisa ruang yang tersedia */
+    line-height: 1.2;      /* Memberi spasi antar baris agar nyaman dibaca */
+    min-width: 250px;      /* Batas minimum sebelum teks pindah ke bawah gambar */
+    font-weight: bold;
+    font-size: 31px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: rgb(0, 98, 255);
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.desc {
+    flex: 1;               /* Membuat teks mengisi sisa ruang yang tersedia */
+    line-height: 1.6;      /* Memberi spasi antar baris agar nyaman dibaca */
+    min-width: 250px;      /* Batas minimum sebelum teks pindah ke bawah gambar */
+    font-size: 14px;
+    margin-top: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: rgb(75, 75, 75);
+    text-align: justify;
+}
+/* Container utama navbar */
+.navbar-flex {
+    display: flex;           /* Mengaktifkan mode Flexbox */
+    justify-content: space-between; /* Membuat logo di kiri, menu di kanan */
+    align-items: center;     /* Membuat semua elemen rata tengah secara vertikal */
+    padding: 10px 5%;       /* Memberi ruang di sisi kiri & kanan */
+}
+
+/* Mengatur jarak antar link di dalam menu */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 30px;              /* Jarak antar item (Home, About, Help, Button) */
+}
+
+/* Reset link agar tidak ada garis bawah secara default */
+.topinfo {
+    text-decoration: none;
+    color: rgb(130, 130, 130);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Penyesuaian Responsif (Untuk HP) */
+@media screen and (max-width: 768px) {
+    .navbar-flex {
+        flex-direction: column; /* Menu pindah ke bawah logo saat di HP */
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .nav-menu {
+        gap: 15px;
+        flex-wrap: wrap;       /* Agar menu tidak terpotong jika layar sangat kecil */
+        justify-content: center;
+    }
+}
+.img-hero {
+    max-width: 500px; /* Batas maksimal lebar gambar */
+    width: 100%;      /* Gambar akan mengecil otomatis mengikuti lebar layar */
+    height: auto;     /* Menjaga proporsi gambar agar tidak gepeng */
+    display: block;
+}
+
+/* Tambahkan ini pada body untuk mencegah overflow yang tidak disengaja */
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Mengunci geser ke samping */
+    width: 100%;
+}
+/* Sembunyikan hamburger di layar desktop */
+.hamburger {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    transition: all 0.3s ease;
+}
+
+/* Responsif untuk HP */
+@media screen and (max-width: 768px) {
+    .hamburger {
+        display: flex; /* Munculkan hamburger */
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 70px; /* Sesuaikan dengan tinggi navbar Anda */
+        left: -100%; /* Sembunyikan menu di luar layar kiri */
+        flex-direction: column;
+        background-color: white;
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+        padding: 20px 0;
+        z-index: 1000;
+    }
+
+    /* Saat menu aktif (diklik) */
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .navbar-flex {
+        flex-direction: row; /* Tetap sejajar horizontal (Logo & Hamburger) */
+        justify-content: space-between;
+    }
+}
+@media screen and (max-width: 768px) {
+    .startbutton-b {
+        display: block;    /* Munculkan kembali di HP */
+        width: 100%;       /* Lebar penuh sesuai permintaan sebelumnya */
+        margin-left: 0;
+        box-sizing: border-box;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .txt-cont .nav-form {
+        display: block;    /* Pastikan form pembungkusnya juga muncul */
+        width: 100%;
+    }
+}
