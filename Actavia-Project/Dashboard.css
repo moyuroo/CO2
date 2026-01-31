@@ -1,0 +1,1548 @@
+
+* {
+    font-family: 'Poppins';
+}
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+.universal-desc {
+    font-size: 12px;
+    color:var(--text-secondary);
+}
+
+
+.menu-container {
+    background-color: var(--sidebar-color) !important;
+    border-right: 1px solid var(--border-color) !important;
+    transition: background-color 0.3s ease;
+}
+
+.exercise-card, .option-item, .review-card {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+h1, h2, h3, p, span {
+    color: var(--text-color);
+}
+
+.header-user-name { color: var(--text-color); }
+body {
+    font-family: 'Poppins',Cascadia Mono,monospace;
+    letter-spacing: 0;
+}
+/*HOME*/
+.page-header-row {
+    display: flex;
+    justify-content: space-between; /* Mendorong judul ke kiri, jam ke kanan */
+    align-items: baseline;            /* Agar sejajar secara vertikal */
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+.realtime-clock {
+    font-family: 'Poppins', monospace;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgb(50, 50, 50);
+    background: #f0f8ff;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid #007bff;
+}
+.sunmoon-image {
+    width: 60px;
+}
+.home-title-colored {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 98, 255);
+    padding: 7px;
+    font-family: 'Poppins', Roboto Mono, monospace;
+    text-align: center;
+    margin-left: 0px;
+}
+.home-title {
+    font-size: 20px;
+    color: rgb(0, 98, 255);
+}
+/* 1. Base Layout: Laptop/Desktop First */
+.menu-image-text {
+    display: flex;
+    flex-direction: row;     /* Side-by-side on laptop */
+    align-items: center;    /* Vertical center alignment */
+    gap: 15px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.welcome-image {
+    width: 45%;             /* Image takes 40% width */
+    max-width: 400px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.home-image-and-text {
+    flex: 1;                /* Text fills the remaining 60% */
+}
+
+/* 2. Responsive Layout: Mobile Devices */
+@media screen and (max-width: 768px) {
+    .menu-image-text {
+        flex-direction: column; /* Stack vertically on HP */
+        text-align: center;
+        gap: 15px;
+    }
+
+    .welcome-image {
+        width: 100%;        /* Image takes full width on HP */
+        max-width: 300px;   /* But doesn't get too giant */
+    }
+
+    .home-image-and-text {
+        width: 100%;
+    }
+
+    .desc {
+        text-align: center; /* Better readability for mobile */
+    }
+}
+/* Container Sub-Menu */
+.sub-nav-container {
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--sidebar-color);
+    border-radius: 8px;
+    margin-top: 15px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+/* Item Sub-Menu */
+.sub-nav-item {
+    flex: 1; /* Membagi rata menjadi 4 bagian */
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: lighter;
+    transition: 0.3s;
+    color: var(--text-color);
+    border-right: 1px solid #ddd;
+}
+
+.sub-nav-item:last-child {
+    border-right: none;
+}
+
+/* Keadaan Aktif (Tab terpilih) */
+.sub-nav-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.sub-nav-item:hover:not(.active) {
+    background-color: #e2e2e2;
+}
+
+/* Konten Tab */
+.sub-tab-content {
+    display: none; /* Sembunyikan semua secara default */
+    padding: 20px;
+    background: var(--card-bg);
+    border: 1px solid #eee;
+    border-radius: 0 0 8px 8px;
+    animation: fadeIn 0.3s ease;
+}
+
+.sub-tab-content.active {
+    display: block; /* Tampilkan yang aktif */
+}
+
+/* DAILY LOGIN */
+.daily-login-container {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.daily-login-msg {
+    font-size: 13px;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.reward-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 25px;
+    overflow-x: auto; /* Agar aman di layar sangat kecil */
+    padding: 10px 5px;
+}
+
+.reward-card {
+    flex: 1;
+    min-width: 60px;
+    background: var(--sidebar-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-color);
+    padding: 10px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.3s all ease;
+}
+
+.reward-card.claimed {
+    opacity: 0.5;
+    background-color: var(--sidebar-color) !important;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+.reward-card.active-day {
+    border: 2px solid #007bff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,123,255,0.2);
+}
+
+.reward-day {
+    font-size: 11px;
+    font-weight: bold;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.reward-icon-bg {
+    background: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.reward-img {
+    width: 22px;
+    height: 22px;
+}
+
+.reward-amount {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text-color);
+}
+
+/* Hadiah Hari ke-7 (Gems) */
+.reward-card.special {
+    background: var(--sidebar-color);
+    border-color: #ff00d4;
+    color: var(--text-color);
+}
+
+.claim-button {
+    background: linear-gradient(to right, #007bff, #00d4ff);
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    transition: 0.3s;
+}
+
+.claim-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.claim-button:disabled {
+    background: #cbd5e1;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+/* LOADING CSS */
+/* Container Utama Loading */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Putih transparan */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Pastikan di atas segalanya */
+    transition: opacity 0.3s ease;
+}
+
+/* Spinner Modern */
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007bff; /* Warna biru aplikasi Anda */
+    border-radius: 50%;
+    animation: spin 0.5s linear infinite;
+}
+
+/* Animasi Putar */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Class untuk menyembunyikan loading */
+.loading-hidden {
+    opacity: 0;
+    pointer-events: none; /* Agar tidak menghalangi klik saat hilang */
+}
+
+#loading-overlay p {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 13px;
+    color: #007bff;
+    font-family: 'Poppins', monospace;
+}
+/*BUTTON*/
+.startbutton {
+    color: rgb(75, 75, 75);
+    font-family: 'Poppins',Cascadia Mono,monospace;
+    background-color: rgb(255, 255, 255);
+    font-size: medium;
+    padding: 8px;
+    margin-top: 10px;
+    border: solid 1px rgb(87, 87, 87);
+    font-size: 14px;
+}
+.startbutton:hover {
+    transition: 0.5s all ease;
+    font-weight: bold;
+    background-color: rgb(191, 0, 255);
+    color: white;
+}
+.startbutton:active {
+    background-color: rgb(104, 0, 139);
+}
+.cont-container {
+    display: flex;         /* Membuat elemen di dalamnya berjejer ke samping */
+    align-items: center;   /* Membuat teks dan gambar sejajar secara vertikal di tengah */
+    gap: 20px;             /* Memberi jarak antara gambar dan teks */
+    padding-left: 1cm;
+    padding-right: 1cm;
+    padding-top: 1cm;
+    flex-wrap: wrap;       /* Supaya teks pindah ke bawah jika layar HP (responsif) */
+}
+.txt-cont {
+    flex: 1;
+    min-width: 300px;
+}
+.title-desc {
+    flex: 1;               /* Membuat teks mengisi sisa ruang yang tersedia */
+    line-height: 1.2;      /* Memberi spasi antar baris agar nyaman dibaca */
+    min-width: 250px;      /* Batas minimum sebelum teks pindah ke bawah gambar */
+    font-weight: bold;
+    font-size: 1cm;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: rgb(0, 98, 255);
+    padding-left: 1cm;
+    padding-right: 1cm;
+}
+.desc {
+    flex: 1;               /* Membuat teks mengisi sisa ruang yang tersedia */
+    line-height: 1.6;      /* Memberi spasi antar baris agar nyaman dibaca */
+    min-width: 250px;      /* Batas minimum sebelum teks pindah ke bawah gambar */
+    font-size: 12px;
+    margin-top: 0;
+    color: var(--text-secondary);
+    text-align: justify;
+}
+/* Container utama navbar */
+.navbar-flex {
+    display: flex;           /* Mengaktifkan mode Flexbox */
+    justify-content: space-between; /* Membuat logo di kiri, menu di kanan */
+    align-items: center;     /* Membuat semua elemen rata tengah secara vertikal */
+    padding-left: 25px;       /* Memberi ruang di sisi kiri & kanan */
+    padding-right: 25px;
+}
+
+/* Mengatur jarak antar link di dalam menu */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 30px;              /* Jarak antar item (Home, About, Help, Button) */
+}
+
+/* Reset link agar tidak ada garis bawah secara default */
+.topinfo {
+    text-decoration: none;
+    color: rgb(50, 50, 50);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Penyesuaian Responsif (Untuk HP) */
+@media screen and (max-width: 768px) {
+    .navbar-flex {
+        flex-direction: row; /* Menu pindah ke bawah logo saat di HP */
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .nav-menu {
+        gap: 15px;
+        flex-wrap: wrap;       /* Agar menu tidak terpotong jika layar sangat kecil */
+        justify-content: center;
+    }
+}
+.img-hero {
+    max-width: 500px; /* Batas maksimal lebar gambar */
+    width: 100%;      /* Gambar akan mengecil otomatis mengikuti lebar layar */
+    height: auto;     /* Menjaga proporsi gambar agar tidak gepeng */
+    display: block;
+}
+
+/* Tambahkan ini pada body untuk mencegah overflow yang tidak disengaja */
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Mengunci geser ke samping */
+    width: 100%;
+}
+.coins-logo,.gems-logo {
+    width: 25px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.currency-container {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+
+
+/* Latar belakang gelap transparan */
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex; /* Gunakan flex untuk memposisikan kartu di tengah */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Kotak Kartu */
+.modal-card {
+    background: var(--bg-color);
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Animasi Muncul */
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-family: Cascadia Mono, monospace;
+    font-size: 14px;
+}
+.close-btn:hover {
+    transition: 0.5s all ease;
+    font-weight: bold;
+    background-color: rgb(191, 0, 255);
+}
+.close-btn:active {
+    background-color: rgb(104, 0, 139);
+}
+
+
+/* XXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+/* Styling Menu untuk tampilan Desktop */
+.menu-container {
+    display: flex;
+    flex-direction: column; /* Berderet ke bawah di desktop */
+    width: 250px;
+    gap: 10px;
+    padding: 20px;
+    border-right: 1px solid #8e8e8e;
+    height: 100vh;
+    background-color: #f9f9f9;
+}
+
+/* Styling umum untuk setiap item menu */
+/* 1. Keadaan Normal (Default) */
+.home-feature, .exercise-feature, .test-feature, .report-feature, .help-feature {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s all ease; /* Animasi halus */
+    font-size: 13px;
+    background-color:var(--card-bg);
+    border: 1px solid var(--border-color);
+    font-weight: bolder;
+    box-sizing: border-box;
+    color: var(--text-color);
+}
+
+/* 2. Efek HOVER (Menjadi Ungu - Meniru .startbutton:hover) */
+.home-feature:hover, .exercise-feature:hover, 
+.test-feature:hover, .report-feature:hover, .help-feature:hover {
+    background-color: rgb(191, 0, 255) !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+/* 3. Efek SAAT DIKLIK/DITEKAN (Menjadi Gelap - Meniru .startbutton:active) */
+.home-feature:active, .exercise-feature:active, 
+.test-feature:active, .report-feature:active, .help-feature:active {
+    background-color: rgb(104, 0, 139) !important;
+}
+
+/* 4. Keadaan AKTIF (Halaman yang sedang dibuka tetap Biru) */
+/* Kita gunakan selector yang lebih spesifik agar tidak tertimpa hover */
+/* Ganti bagian yang hanya menyebutkan home dan exercise */
+.menu-container div.active {
+    background-color: #007bff !important;
+    color: white !important;
+    border-color: #007bff !important;
+}
+
+/* Pastikan transisi warna tetap smooth */
+.home-feature, .exercise-feature, .test-feature, .test-feature, .report-feature, .help-feature {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* KHUSUS UNTUK TAMPILAN HP */
+@media screen and (max-width: 768px) {
+    .menu-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto; /* Ketinggian otomatis sesuai isi */
+        flex-direction: row; /* Berubah jadi horizontal */
+        justify-content: space-around; /* Jarak antar menu rata */
+        padding: 10px 0;
+        border: 1px solid #909090;
+        background-color: white;
+        z-index: 999;
+    }
+
+    .menu-welcome {
+        display: none; /* Sembunyikan kata "Welcome" di HP agar muat */
+    }
+
+    .home-feature, .exercise-feature, .test-feature, .report-feature, .help-feature {
+        flex: 1;
+        text-align: center;
+        font-size: 12px; /* Kecilkan font di HP */
+        padding: 8px 5px;
+        background-color: transparent;
+    }
+}
+
+/* 19/01/2026
+/* Gabungkan menu dan konten secara horizontal */
+body {
+    display: flex;
+    margin: 0;
+    font-family: 'Poppins', monospace;
+}
+
+.main-content {
+    flex: 1; /* Mengambil sisa ruang di sebelah kanan menu */
+    padding: 20px;
+    height: 100dvh;
+    box-sizing: border-box;
+    overflow: auto;
+    background-color: var(--bg-color) !important;
+    transition: background-color 0.3s ease;
+}
+
+/* Sembunyikan semua halaman secara default */
+.page {
+    display: none;
+    flex: 1;
+    overflow-y: hidden;
+}
+
+/* Tampilkan hanya halaman yang memiliki class .active */
+.page.active {
+    display: block;
+    animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsif untuk HP */
+@media screen and (max-width: 768px) {
+    body {
+        flex-direction: column; /* Menu pindah ke bawah, konten di atas */
+    }
+    .main-content {
+        padding-bottom: 80px; /* Agar konten tidak tertutup menu bottom bar */
+    }
+}
+
+/* DASHBOARD PROFILE PICTURE
+/* Container header profil di dalam halaman */
+.page-profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 15px;
+    padding-left: 0px; /* Jarak dari pinggir halaman */
+    border-bottom: 1px solid var(--border-color) !important; /* Garis tipis di bawah profil */
+    margin: 0px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    padding-right: 0x;
+}
+
+/* Foto Profil */
+.header-profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #007bff;
+}
+.profile-left-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Teks Info */
+.header-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-user-name {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.header-user-status {
+    font-size: 11px;
+    color: #28a745;
+}
+
+/* Menyesuaikan jarak judul agar tidak terlalu menempel ke profil */
+.title-desc {
+    padding-top: 0px;
+}
+
+/* CURRENCY STATUS */
+.coin-container-right,.gem-container-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    /* Menghapus padding-right agar benar-benar rata dengan ujung border */
+    padding-right: 0px; 
+}
+.coin-icon,.gem-icon {
+    width: 25px;
+    display: block;
+    align-items: center;
+}
+/* Container pembungkus koin/gem dan tombolnya */
+.currency-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Jarak antara gambar, angka, dan tombol */
+    background: rgba(0, 0, 0, 0.05); /* Background tipis agar terlihat seperti slot */
+    padding: 4px 8px;
+    border-radius: 20px;
+}
+
+/* Styling tombol + */
+.add-currency-btn {
+    background-color: #0088ff; /* Warna hijau */
+    color: white;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    line-height: 1;
+}
+
+.add-currency-btn:hover {
+    background-color: #ee00ff;
+    transform: scale(1.1);
+}
+
+.add-currency-btn:active {
+    transform: scale(0.9);
+}
+
+/* Pastikan header profil tetap rapi */
+.coin-container-right {
+    display: flex;
+    align-items: center;
+}
+/* Pastikan grid di dalam modal hanya 2 kolom dan tidak terlalu besar */
+#topup-options.exercise-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#topup-modal .modal-card {
+    max-width: 350px; /* Lebih ramping untuk modal topup */
+}
+
+.currency-wrapper {
+    cursor: default; /* Agar kursor tidak membingungkan */
+}
+
+
+/* EXERCISE MENU */
+/* Container Utama untuk Kartu-Kartu */
+/* Container Utama */
+.exercise-title-colored {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 98, 255);
+    padding: 7px;
+    text-align: center;
+    margin-left: 0px;
+}
+.exercise-title {
+    font-size: 20px;
+    color: rgb(0, 98, 255);
+}
+.exercise-title-desc {
+    font-size: 12px;
+}
+.quiz-title {
+    font-size: 20px;
+    color: var(--text-color) !important;
+    padding: 5px;
+    width: max-content;
+}
+.quiz-title-desc {
+    font-size: 12px;
+}
+/* Container Utama */
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Berjejer di Laptop */
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Card Design V2 */
+.exercise-card-v2 {
+    display: grid;
+    grid-template-columns: 100px 1fr; /* Kolom 1 untuk Logo, Kolom 2 untuk Teks */
+    grid-template-rows: auto auto;    /* Baris 1 untuk Title, Baris 2 untuk Desc */
+    grid-template-areas: 
+        "logo title"
+        "logo desc";
+    background: var(--card-bg) !important;
+    border-radius: 12px;
+    border: 1px solid var(--border-color) !important;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.exercise-card-v2:hover {
+    transform: translateY(-5px);
+    border-color: #007bff;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+/* Bagian Logo (Merged A1 & A2) */
+.card-logo {
+    grid-area: logo;
+    background-color: #ededed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #eee;
+    padding: 15px;
+}
+
+.card-logo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+/* Bagian Title (B1) */
+.card-title {
+    grid-area: title;
+    padding: 15px 15px 5px 15px;
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0; /* Garis tipis seperti di gambar user */
+}
+
+/* Bagian Deskripsi (B2) */
+.card-desc {
+    grid-area: desc;
+    padding: 10px 15px 15px 15px;
+    font-size: 13px;
+    color: var(--text-color);
+    line-height: 1.4;
+}
+
+/* Responsive: Menumpuk di HP */
+@media screen and (max-width: 768px) {
+    .exercise-grid {
+        grid-template-columns: 1fr; /* Jadi 1 baris ke bawah */
+    }
+    
+    .exercise-card-v2 {
+        grid-template-columns: 80px 1fr; /* Logo sedikit lebih kecil di HP */
+    }
+}
+.quiz-feature,.case-feature,.cycle-feature {
+    margin-bottom:10px ;
+}
+/* Styling Dasar Kartu */
+.exercise-card {
+    background: white;
+    border: 1px solid #727272;
+    border-radius: 12px;
+    padding: 20px; /* Padding lebih kecil agar muat di HP */
+    text-align: center;
+    cursor: pointer;
+    gap: 15px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* Khusus Accounting Cycle: Mengambil 2 kolom penuh (Full Width) */
+
+
+/* Ukuran Icon */
+.exercise-icon {
+    width: 60px; /* Ukuran lebih aman untuk layar kecil */
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.exercise-card p {
+    font-weight: bold;
+    font-size: 14px; /* Ukuran font standar untuk HP */
+    margin: 0;
+    color: #333;
+}
+
+/* Hover & Active Effect */
+.exercise-card:hover {
+    transform: translateY(-3px);
+    border-color: #007bff;
+    background-color: #f0f7ff;
+}
+/*MATERIAL*/
+.quiz-material-icon {
+    width: 60px; /* Ukuran lebih aman untuk layar kecil */
+    height: auto;
+    margin-bottom: 10px;
+}
+/*DIFICULTY*/
+/* Container Judul Difficulty */
+.difficulty-title {
+    border-bottom: solid 1px #ccc;
+    border-top: solid 1px #ccc;
+    font-size: 13px;
+    text-align: center;
+    margin: 20px 0 10px 0; /* Memberi jarak atas bawah yang pas */
+    padding: 2px 0;
+    color:  rgb(0, 98, 255);
+    font-weight: bolder;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Container untuk tombol tingkat kesulitan */
+.class-type {
+    display: flex;       /* Mengaktifkan flexbox */
+    width: 100%;         /* Lebar penuh layar */
+    gap: 0;              /* Tempelkan kotak (ubah ke 5px jika ingin ada celah) */
+    border: 1px solid #333; /* Border luar pembungkus */
+    border-radius: 8px;  /* Membuat sudut melengkung */
+    overflow: hidden;    /* Agar isi di dalam mengikuti lengkungan border */
+}
+
+/* Styling untuk masing-masing kotak (Easy, Medium, Hard) */
+.easy-class, .medium-class, .hard-class {
+    flex: 1;             /* MEMBAGI LEBAR RATA (33.3% masing-masing) */
+    padding: 15px 5px;   /* Padding atas bawah agar lebih gemuk */
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s all ease;
+    border-right: 1px solid #333; /* Garis pemisah antar kotak */
+}
+
+/* Menghilangkan border kanan pada kotak terakhir agar tidak double */
+.hard-class {
+    border-right: none;
+}
+
+/* Memberi warna berbeda saat di-hover atau aktif (Opsional) */
+.easy-class:hover { background-color: #28a745; color: white; }
+.medium-class:hover { background-color: #ffc107; color: white; }
+.hard-class:hover { background-color: #dc3545; color: white; }
+/* Warna saat tombol aktif */
+.easy-class.active { background-color: #28a745; color: white; }
+.medium-class.active { background-color: #ffc107; color: white; }
+.hard-class.active { background-color: #dc3545; color: white; }
+
+/* Tambahan: pastikan cursor berubah jadi pointer */
+.easy-class, .medium-class, .hard-class {
+    cursor: pointer;
+    transition: 0.3s;
+}
+/* Responsif untuk HP Kecil */
+@media screen and (max-width: 480px) {
+    .easy-class, .medium-class, .hard-class {
+        padding: 12px 2px;
+        font-size: 12px; /* Font mengecil sedikit di HP */
+    }
+}
+/* Penyesuaian Responsif Khusus HP */
+@media screen and (max-width: 480px) {
+    .exercise-grid {
+        gap: 10px; /* Jarak lebih rapat di HP kecil */
+    }
+    
+    .exercise-card {
+        padding: 15px 10px;
+    }
+    
+    .exercise-icon {
+        width: 45px; /* Icon mengecil di HP agar tidak memenuhi layar */
+    }
+    
+    .exercise-card p {
+        font-size: 12px; /* Teks lebih kecil agar tidak pecah baris */
+    }
+}
+
+/*NUMBER OF QUESTION*/
+/* Container Judul NOQ */
+.NoQ-title {
+    border-bottom: solid 1px #ccc;
+    border-top: solid 1px #ccc;
+    font-size: 13px;
+    text-align: center;
+    margin: 20px 0 10px 0; /* Memberi jarak atas bawah yang pas */
+    padding: 2px 0;
+    color:  rgb(0, 98, 255);
+    font-weight: bolder;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Container untuk tombol tingkat kesulitan */
+.NoQ-type {
+    display: flex;       /* Mengaktifkan flexbox */
+    width: 100%;         /* Lebar penuh layar */
+    gap: 0;              /* Tempelkan kotak (ubah ke 5px jika ingin ada celah) */
+    border: 1px solid #333; /* Border luar pembungkus */
+    border-radius: 8px;  /* Membuat sudut melengkung */
+    overflow: hidden;    /* Agar isi di dalam mengikuti lengkungan border */
+}
+
+/* Styling untuk masing-masing kotak (Easy, Medium, Hard) */
+.a-quest,.b-quest,.c-quest,.d-quest,.e-quest {
+    flex: 1;             /* MEMBAGI LEBAR RATA (33.3% masing-masing) */
+    padding: 15px 5px;   /* Padding atas bawah agar lebih gemuk */
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s all ease;
+    border-right: 1px solid #333; /* Garis pemisah antar kotak */
+}
+
+/* Menghilangkan border kanan pada kotak terakhir agar tidak double */
+.e-quest {
+    border-right: none;
+}
+
+/* Memberi warna berbeda saat di-hover atau aktif (Opsional) */
+.a-quest:hover { background-color: rgb(0, 98, 255); color: white; }
+.b-quest:hover { background-color: rgb(0, 98, 255); color: white; }
+.c-quest:hover { background-color: rgb(0, 98, 255); color: white; }
+.d-quest:hover { background-color: rgb(0, 98, 255); color: white; }
+.e-quest:hover { background-color: rgb(0, 98, 255); color: white; }
+/* Warna saat tombol aktif */
+.a-quest.active { background-color: rgb(225, 0, 255); color: white; }
+.b-quest.active { background-color: rgb(225, 0, 255); color: white; }
+.c-quest.active { background-color: rgb(225, 0, 255); color: white; }
+.d-quest.active { background-color: rgb(225, 0, 255); color: white; }
+.e-quest.active { background-color: rgb(225, 0, 255); color: white; }
+
+/* Tambahan: pastikan cursor berubah jadi pointer */
+.a-quest, .b-quest, .c-quest,.d-quest,.e-quest {
+    cursor: pointer;
+    transition: 0.3s;
+}
+/* Responsif untuk HP Kecil */
+@media screen and (max-width: 480px) {
+    .a-quest, .b-quest, .c-quest,.d-quest,.e-quest {
+        padding: 12px 2px;
+        font-size: 12px; /* Font mengecil sedikit di HP */
+    }
+}
+/* SUB MATERIAL */
+/* Tombol Play di pojok kanan bawah area konten */
+/* Container Sub-Materi yang fleksibel */
+.sub-material-grid {
+    display: flex;
+    flex-wrap: wrap;       /* KUNCI: Membuat item pindah ke bawah jika tidak muat */
+    gap: 10px;             /* Memberi jarak antar kotak */
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Styling item sub-materi agar ukurannya pas */
+.sub-item {
+    flex: 1;               /* Membuat kotak melebar mengisi ruang */
+    min-width: 120px;      /* Batas lebar minimum agar tidak terlalu gepeng di HP */
+    max-width: 200px;      /* Batas lebar maksimum di PC agar tidak terlalu panjang */
+    padding: 15px 10px;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: white;
+    transition: 0.3s all ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Efek saat dipilih (Active) */
+.sub-item.active {
+    background-color: rgb(225, 0, 255);
+    color: white;
+    border-color: rgb(225, 0, 255);
+    font-weight: bold;
+}
+
+/* Hover effect */
+.sub-item:hover:not(.active) {
+    background-color: #f0f0f0;
+    border-color: rgb(0, 98, 255);
+}
+/*PLAY BUTTON*/
+/* Tombol Play di pojok kanan bawah area konten */
+.play-button {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', monospace;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s all ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.play-button:hover {
+    background-color: #218838;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.play-button:active {
+    transform: translateY(0);
+}
+.stats-status-bar {
+    display: flex;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 15px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.status-icon-bg {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.energy-bg { background: rgba(0, 123, 255, 0.1); }
+.coin-bg { background: rgba(255, 193, 7, 0.1); }
+
+.status-icon { width: 20px; height: 20px; }
+
+.status-info { display: flex; flex-direction: column; }
+
+.status-value {
+    font-weight: 800;
+    font-size: 14px;
+    color: #333;
+}
+
+.status-label {
+    font-size: 10px;
+    color: #888;
+    text-transform: uppercase;
+}
+/* PLAY QUIZ AND SCORE */
+/* Styling pilihan jawaban agar rapi */
+.option-item {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    color: rgb(80, 80, 80);
+    margin-bottom: 10px;
+    border-color: rgb(75, 75, 75);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: left;
+    font-family: 'Poppins', monospace;
+}
+.option-item:hover { background-color: #f0f7ff; border-color: #007bff; }
+.option-item.selected { background-color: #007bff; color: white; border-color: #007bff; }
+
+/* Review Card */
+.review-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.explanation-box {
+    background: #eef9ee;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 13px;
+    border-left: 4px solid #28a745;
+}
+/* Review Card Styling */
+.review-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px;
+    color: #4a4a4a;
+    font-size: 13px;
+    margin-bottom: 0px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-family: 'Poppins', Cascadia Mono, monospace, Roboto Mono;
+}
+
+.explanation-box {
+    background: #f0f9ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #1e3a8a;
+    line-height: normal;
+    border-left: 4px solid #3b82f6;
+}
+/* Container Utama saat Kuis Running */
+#quiz-running-page .quiz-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgb(86, 86, 86);
+    margin-bottom: 25px;
+}
+
+/* Styling Teks Pertanyaan */
+#display-question {
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgb(50, 50, 50);
+    font-weight: normal;
+    border-bottom: 1px solid #3f3f3f;
+    padding-bottom: 15px;
+}
+/* Option Item Styling saat kuis berjalan */
+.option-item {
+    background: #f8fafc;
+    border: solid 1px rgb(87, 87, 87);
+    color: rgb(87, 87, 87);
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+}
+
+.option-item:hover {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+/* Warna saat opsi dipilih */
+.option-item.selected {
+    background-color: #007bff !important;
+    color: white !important;
+    border-color: #0056b3 !important;
+}
+
+/* Feedback Overlay */
+.feedback-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    cursor: pointer;
+}
+
+.feedback-card {
+    background: rgb(255, 255, 255);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.feedback-icon { font-size: 80px; margin-bottom: 10px; }
+.feedback-icon {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.feedback-icon img {
+    /* Animasi agar gambar kustom muncul dengan efek bounce */
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+/* Pastikan opsi terpilih berwarna biru */
+.option-item:hover {
+    background-color: #ff00d4 !important;
+    color: white !important;
+    border-color: #5e005c !important;
+}
+/* Container pembungkus utama untuk area Play */
+.play-section-wrapper {
+    margin-top: 40px; /* Jarak antara Sub-Material dengan area Play */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Mengatur posisi di kanan */
+    gap: 12px; /* Jarak antara kotak energi dan tombol play */
+}
+
+/* Kotak Energi */
+.energy-container {
+    display: flex;
+    justify-content: space-between; /* Agar icon di kiri, teks di kanan */
+    align-items: center;
+    background: rgba(0, 123, 255, 0.05);
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 1px solid #007bff;
+    width: 200px; /* Atur lebar tetap */
+    box-sizing: border-box;
+}
+
+/* Tombol Play */
+.play-button {
+    width: 200px; /* Lebar harus sama dengan energy-container */
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.play-button:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.play-button:disabled {
+    background-color: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.energy-info-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Teks timer di bawah angka energi */
+}
+.stats-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+    text-align: center;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
+/* State kartu yang terkunci */
+.exercise-card-v2.locked {
+    position: relative;
+    cursor: not-allowed;
+    filter: grayscale(1); /* Membuat kartu jadi hitam putih */
+    opacity: 0.7;
+    border: 1px dashed #999;
+    background-color: #f5f5f5 !important;
+    pointer-events: none; /* Mencegah klik di level CSS */
+}
+
+/* Menambahkan ikon gembok di tengah kartu */
+.exercise-card-v2.locked::after {
+    content: '🔒'; /* Kamu bisa ganti dengan icon font-awesome jika ada */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    filter: none;
+}
+
+/* Efek hover khusus untuk yang locked (opsional) */
+.exercise-card-v2.locked:hover {
+    transform: none;
+    background-color: #f5f5f5;
+    border-color: #999;
+}
+/* State kartu yang terkunci */
+.exercise-card.locked {
+    position: relative;
+    cursor: not-allowed;
+    filter: grayscale(1); /* Membuat kartu jadi hitam putih */
+    opacity: 0.7;
+    border: 1px dashed #999;
+    background-color: #f5f5f5 !important;
+    pointer-events: none; /* Mencegah klik di level CSS */
+}
+
+/* Menambahkan ikon gembok di tengah kartu */
+.exercise-card.locked::after {
+    content: '🔒'; /* Kamu bisa ganti dengan icon font-awesome jika ada */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    filter: none;
+}
+
+/* Efek hover khusus untuk yang locked (opsional) */
+.exercise-card.locked:hover {
+    transform: none;
+    background-color: #f5f5f5;
+    border-color: #999;
+}
+
+/*  DONATION*/
+
+/* Donation Button Styling */
+.donation-wrapper {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-donate {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.btn-saweria {
+    background-color: #faae2b;
+    color: #000 !important; /* Saweria identik dengan kuning-hitam */
+}
+
+.btn-trakteer {
+    background-color: #be1e2d;
+    color: #fff !important;
+}
+
+.btn-donate:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    filter: brightness(1.1);
+}
+/* DARKMODE */
+/* Container Utama Toggle */
+.toggle-container {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    margin-top: 10px;
+}
+
+/* Sembunyikan Checkbox Asli */
+#theme-toggle {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Background Slider */
+.toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+/* Bola Penggeser */
+.toggle-ball {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* Logika saat Dark Mode (Checked) */
+#theme-toggle:checked + .toggle-label {
+    background-color: #2c3e50; /* Warna gelap saat dark mode */
+}
+
+#theme-toggle:checked + .toggle-label .toggle-ball {
+    transform: translateX(30px); /* Geser ke kanan */
+    background-color: #f1c40f; /* Warna matahari/bulan */
+}
+:root {
+    /* LIGHT MODE */
+    --bg-color: #ffffff;
+    --sidebar-color: #f9f9f9;
+    --card-bg: #ffffff;
+    --text-color: #1a1a1a;
+    --text-secondary: rgb(50, 50, 50);
+    --border-color: #e0e0e0;
+    --header-bg: #ffffff;
+}
+
+body.dark-mode {
+    /* DARK MODE - Skema Slate Premium */
+    --bg-color: #0f172a;       /* Biru Dongker Gelap (Lebih mewah dari hitam pekat) */
+    --sidebar-color: #1e293b;  /* Sedikit lebih terang dari bg agar ada dimensi */
+    --card-bg: #334155;        /* Warna kartu yang menonjol */
+    --text-color: #f1f5f9;     /* Putih tulang agar tidak terlalu silau */
+    --text-secondary: #dadada; /* Abu-abu kebiruan untuk deskripsi */
+    --border-color: #334155;   /* Border halus */
+    --header-bg: #1e293b;
+}
