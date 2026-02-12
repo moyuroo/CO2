@@ -458,15 +458,406 @@
 
 <script src="Quiz-BOA.js"></script>
 <script>
+///==========================================
+// 0. OTHER JS
+///==========================================
+// GABUNGKAN SEMUA LOGIKA showPage MENJADI SATU SEPERTI INI:
+function showPage(pageId) {
+    const overlay = document.getElementById('loading-overlay');
+    const globalHeader = document.getElementById('global-profile-header');
+    
+    // Tampilkan loading
+    overlay.classList.remove('loading-hidden');
+
+    setTimeout(() => {
+        // 1. Logika Header (Sembunyikan jika di halaman help)
+        if (globalHeader) {
+            globalHeader.style.display = (pageId === 'help-page') ? 'none' : 'flex';
+        }
+
+        // 2. Navigasi Halaman
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const target = document.getElementById(pageId);
+        if (target) target.classList.add('active');
+
+        // 3. Update Menu Active State
+        document.querySelectorAll('.menu-container div').forEach(item => {
+            item.classList.remove('active');
+            // Cek apakah onclick mengandung pageId ini
+            const action = item.getAttribute('onclick');
+            if (action && action.includes(pageId)) {
+                item.classList.add('active');
+            }
+        });
+
+        // 4. LOGIKA PENTING: Update Report saat halaman dibuka
+        if (pageId === 'report-page') {
+            renderReport();
+        }
+
+        // Sembunyikan loading
+        overlay.classList.add('loading-hidden');
+    }, 300);
+}
+
+// PASTIKAN FUNGSI saveTrainingResult MEMANGGIL renderReport
+function finishQuiz() {
+    clearInterval(quizTimerInterval);
+    
+    let correct = 0;
+    currentQuestions.forEach((q, i) => { if (userAnswers[i] === q.answer) correct++; });
+    const total = currentQuestions.length;
+
+    // SIMPAN DATA KE STORAGE
+    saveTrainingResult(correct, total);
+
+    // Tampilkan hasil di UI Result Page
+    document.getElementById('stat-correct').innerText = correct;
+    document.getElementById('stat-wrong').innerText = total - correct;
+    document.getElementById('stat-score').innerText = Math.round((correct / total) * 100);
+
+    showPage('result-page');
+}
+
+function saveTrainingResult(correctAnswers, totalQuestions) {
+    let totalAnswered = parseInt(localStorage.getItem('totalAnswered')) || 0;
+    let totalCorrect = parseInt(localStorage.getItem('totalCorrect')) || 0;
+    let trainingSessions = parseInt(localStorage.getItem('trainingSessions')) || 0;
+
+    localStorage.setItem('totalAnswered', totalAnswered + totalQuestions);
+    localStorage.setItem('totalCorrect', totalCorrect + correctAnswers);
+    localStorage.setItem('trainingSessions', trainingSessions + 1);
+    
+    // Render report agar saat user klik menu report, data sudah siap
+    renderReport();
+}
+// HOME SUBMENU
+function showSubTab(tabName) {
+    // 1. Sembunyikan semua konten sub-tab
+    document.querySelectorAll('.sub-tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+
+    // 2. Hapus class active dari semua tombol navigasi
+    document.querySelectorAll('.sub-nav-item').forEach(nav => {
+        nav.classList.remove('active');
+    });
+
+    // 3. Tampilkan konten yang dipilih
+    document.getElementById('sub-' + tabName).classList.add('active');
+
+    // 4. Tambahkan class active ke tombol yang diklik
+    // Kita cari elemen yang teksnya sesuai (atau bisa pakai event target)
+    const tabs = document.querySelectorAll('.sub-nav-item');
+    tabs.forEach(tab => {
+        if(tab.innerText.toLowerCase().includes(tabName.replace('-', ' '))) {
+            tab.classList.add('active');
+        }
+    });
+}
+/// CLOCK CSS
+function updateDigitalClock() {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0'); // Ambil Detik
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // Konversi ke format 12 jam
+    hours = hours % 12;
+    hours = hours ? hours : 12; 
+    
+    // Format: HH:MM:SS AM/PM
+    const strTime = `${hours}:${minutes}:${seconds} ${ampm}`;
+
+    // Update semua elemen jam di berbagai halaman
+    const clocks = document.querySelectorAll('.realtime-clock');
+    clocks.forEach(clock => {
+        clock.innerText = strTime;
+    });
+}
+
+// Jalankan interval setiap 1 detik
+setInterval(updateDigitalClock, 1000);
+updateDigitalClock();
+
+/// DARKMODE
+function toggleDarkMode() {
+    const body = document.body;
+    const modeText = document.getElementById('mode-text');
+    const isChecked = document.getElementById('theme-toggle').checked;
+    
+    if (isChecked) {
+        body.classList.add('dark-mode');
+        modeText.innerText = "Dark";
+        localStorage.setItem('theme', 'dark');
+    } else {
+        body.classList.remove('dark-mode');
+        modeText.innerText = "Light";
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+// Tambahkan logika ini di dalam DOMContentLoaded yang sudah ada
+document.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem('theme');
+    const themeToggle = document.getElementById('theme-toggle');
+    const modeText = document.getElementById('mode-text');
+
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if(themeToggle) themeToggle.checked = true;
+        if(modeText) modeText.innerHTML = `<p style="color: var(--text-color);">Dark</p>`;
+    }
+});
+/// COIN AND GEM +
+function buyCurrency(type) {
+    alert("Go to store to buy more " + type + "!");
+    // Anda bisa mengarahkan ke halaman shop:
+    // showPage('shop-page');
+}
+function goToOffersTab() {
+    // 1. Pindah ke halaman Home Page utama
+    showPage('home-page');
+
+    // 2. Aktifkan konten sub-tab Offers
+    // Kita gunakan fungsi showSubTab yang sudah Anda buat di kode tadi
+    showSubTab('offers');
+    
+    // 3. Scroll otomatis ke area konten agar user melihat penawarannya
+    const subNav = document.querySelector('.sub-nav-container');
+    if (subNav) {
+        subNav.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+function showPage(name) {
+    // List materi yang diizinkan (Hanya Basics untuk sekarang)
+    const allowedMaterials = ['material-selection-page'];
+
+    if (!allowedMaterials.includes(name)) {
+        alert("Materi ini masih terkunci! Selesaikan Basics of Accounting terlebih dahulu.");
+        return;
+    }
+
+    selectedMaterialGlobal = name;
+    // ... sisa kode fungsi selectMaterial kamu ...
+}
+function selectMaterial(name) {
+    // List materi yang diizinkan (Hanya Basics untuk sekarang)
+    const allowedMaterials = ['Basics of Accounting'];
+
+    if (!allowedMaterials.includes(name)) {
+        alert("Materi ini masih terkunci! Selesaikan Basics of Accounting terlebih dahulu.");
+        return;
+    }
+
+    selectedMaterialGlobal = name;
+    // ... sisa kode fungsi selectMaterial kamu ...
+}
+
+// GRETTING SESUAI WAKTU
+function updateGreeting() {
+    const greetingElement = document.getElementById('dynamic-greeting');
+    const now = new Date();
+    const hours = now.getHours(); // Mengambil jam format 0-23
+
+    let message = "";
+
+    if (hours >= 4 && hours < 11) {
+        // 04:00 - 10:59
+        message = "Selamat pagi, Actavians!";
+    } else if (hours >= 11 && hours < 15) {
+        // 11:00 - 14:59
+        message = "Selamat siang, Actavians!";
+    } else if (hours >= 15 && hours < 18) {
+        // 15:00 - 17:59
+        message = "Selamat sore, Actavians!";
+    } else {
+        // 18:00 - 03:59 (Malam)
+        message = "Selamat malam, Actavians!";
+    }
+
+    if (greetingElement) {
+        greetingElement.innerText = message;
+    }
+}
+
+// Jalankan fungsi saat halaman dimuat
+window.onload = updateGreeting;
+/// DAILY LOGIN
+// --- 1. Inisialisasi Saldo (Ambil dari penyimpanan browser) ---
+let userCoins = parseInt(localStorage.getItem('acta_coins')) || 0;
+let userGems = parseInt(localStorage.getItem('acta_gems')) || 0;
+
+// --- 2. Fungsi Update Tampilan Saldo di Header ---
+function refreshCurrencyUI() {
+    // Mencari elemen koin dan gem di header
+    const coinDisplay = document.querySelector('.coin-count');
+    const gemDisplay = document.querySelector('.gem-count');
+    
+    if(coinDisplay) coinDisplay.innerText = userCoins;
+    if(gemDisplay) gemDisplay.innerText = userGems;
+
+    // Simpan saldo terbaru ke LocalStorage
+    localStorage.setItem('acta_coins', userCoins);
+    localStorage.setItem('acta_gems', userGems);
+}
+
+// --- 3. Fungsi Update Tampilan Kartu Hadiah ---
+function updateDailyLoginUI() {
+    const today = new Date().getDay(); 
+    const currentDayIndex = (today === 0) ? 7 : today; // Ubah Minggu jadi hari ke-7
+
+    const cards = document.querySelectorAll('.reward-card');
+    const claimBtn = document.getElementById('claimRewardBtn');
+    
+    const lastClaimDate = localStorage.getItem('last_claim_date');
+    const todayDateString = new Date().toDateString();
+
+    cards.forEach(card => {
+        const day = parseInt(card.getAttribute('data-day'));
+        card.classList.remove('active-day', 'claimed');
+
+        if (day < currentDayIndex) {
+            card.classList.add('claimed'); // Hari kemarin
+        } else if (day === currentDayIndex) {
+            if (lastClaimDate === todayDateString) {
+                card.classList.add('claimed'); // Sudah ambil hari ini
+                claimBtn.disabled = true;
+                claimBtn.innerText = "Sudah Diambil";
+            } else {
+                card.classList.add('active-day'); // Siap diambil
+                claimBtn.disabled = false;
+                claimBtn.innerText = "Ambil Hadiah";
+            }
+        }
+    });
+}
+
+// --- 4. Fungsi Eksekusi Klaim Hadiah ---
+function claimDailyReward() {
+    const activeCard = document.querySelector('.reward-card.active-day');
+    
+    if (!activeCard) {
+        alert("Tidak ada hadiah untuk diambil saat ini!");
+        return;
+    }
+
+    // Ambil info hadiah dari kartu
+    const amount = parseInt(activeCard.querySelector('.reward-amount').innerText);
+    const isGem = activeCard.classList.contains('special'); // Kartu Minggu biasanya Gem
+
+    // Tambah saldo
+    if (isGem) {
+        userGems += amount;
+        alert(`Berhasil! +${amount} Gem telah ditambahkan.`);
+    } else {
+        userCoins += amount;
+        alert(`Berhasil! +${amount} Koin telah ditambahkan.`);
+    }
+
+    // Simpan tanggal klaim hari ini
+    localStorage.setItem('last_claim_date', new Date().toDateString());
+
+    // Refresh semua UI
+    refreshCurrencyUI();
+    updateDailyLoginUI();
+}
+
+// --- 5. Jalankan Fungsi Saat Halaman Dibuka ---
+document.addEventListener('DOMContentLoaded', () => {
+    refreshCurrencyUI();
+    updateDailyLoginUI();
+});
+/// REFRESH
+let isQuizRunning = false;
+
+function startQuiz() {
+    isQuizRunning = true;
+    showPage('quiz-running-page');
+    // ... logika kuis lainnya ...
+}
+
+// Munculkan peringatan jika user mencoba REFRESH atau TUTUP TAB
+window.addEventListener('beforeunload', (e) => {
+    if (isQuizRunning) {
+        e.preventDefault();
+        e.returnValue = ''; // Standar browser modern untuk memicu dialog konfirmasi
+    }
+});
+/// BACK ACTION
+function handleBackAction() {
+    if (isQuizRunning) {
+        const confirmExit = confirm("Apakah Anda yakin ingin keluar? Semua kemajuan kuis akan hilang.");
+        if (confirmExit) {
+            isQuizRunning = false;
+            showPage('exercise-page'); // Kembali ke menu latihan
+        }
+    } else {
+        showPage('exercise-page');
+    }
+}
 // ==========================================
 // 1. VARIABEL GLOBAL & STATE
 // ==========================================
-let userCoins = parseInt(localStorage.getItem('acta_coins')) || 0;
-let userGems = parseInt(localStorage.getItem('acta_gems')) || 0;
-let energy = parseInt(localStorage.getItem('agent_energy')) || 5;
-let lastRefillTime = parseInt(localStorage.getItem('last_refill_time')) || Date.now();
-const MAX_ENERGY = 5;
-const REFILL_TIME = 6 * 60; 
+// Konfigurasi Harga
+const QUIZ_COIN_COST = 5;
+
+function startQuiz() {
+    // 1. Ambil setting kuis
+    const diff = document.querySelector('.class-type .active')?.innerText;
+    const noqText = document.querySelector('.NoQ-type .active')?.innerText;
+    const subs = document.querySelectorAll('#sub-material-container .sub-item.active');
+
+    if (!diff || !noqText || subs.length === 0) {
+        alert("Lengkapi pengaturan kuis terlebih dahulu!");
+        return;
+    }
+
+    // 2. Logika Penggunaan Energi vs Koin
+    if (energy > 0) {
+        // Gunakan Energi jika masih ada
+        energy--;
+        localStorage.setItem('agent_energy', energy);
+        processStartQuiz();
+    } 
+    else if (userCoins >= QUIZ_COIN_COST) {
+        // Jika Energi habis, tawarkan bayar pakai koin
+        const confirmPay = confirm(`Energi Anda habis! Gunakan ${QUIZ_COIN_COST} Acta Coins untuk bermain?`);
+        if (confirmPay) {
+            userCoins -= QUIZ_COIN_COST;
+            refreshCurrencyUI(); // Update tampilan koin di header
+            processStartQuiz();
+        }
+    } 
+    else {
+        // Jika keduanya habis
+        alert("Energi dan Koin tidak cukup! Tunggu energi pulih atau ambil hadiah harian.");
+    }
+}
+
+function processStartQuiz() {
+    // Update tampilan energi
+    updateEnergyUI(); 
+    
+    // Pindah ke halaman kuis (Logika Anda sebelumnya)
+    showPage('quiz-running-page');
+    // ... panggil fungsi load questions Anda di sini ...
+    console.log("Kuis dimulai!");
+}
+
+function updateEnergyUI() {
+    const energyText = document.getElementById('energy-count');
+    if(energyText) energyText.innerText = `${energy}/5`;
+}
+
+// Pastikan refreshCurrencyUI dipanggil agar koin tersinkron
+function refreshCurrencyUI() {
+    document.querySelectorAll('.coin-count').forEach(el => el.innerText = userCoins);
+    document.querySelectorAll('.gem-count').forEach(el => el.innerText = userGems);
+    localStorage.setItem('acta_coins', userCoins);
+    localStorage.setItem('acta_gems', userGems);
+}
 
 let selectedMaterialGlobal = "";
 let currentQuestions = [];
@@ -474,6 +865,13 @@ let userAnswers = [];
 let currentQuestionIndex = 0;
 let quizTimerInterval; 
 let totalSeconds = 0;
+let timePerQuestion = []; // UNTUK STATISTIK BARU
+let lastTimestamp = 0;    // UNTUK STATISTIK BARU
+
+const MAX_ENERGY = 5;
+const REFILL_TIME = 6 * 60; 
+let energy = parseInt(localStorage.getItem('agent_energy')) || MAX_ENERGY;
+let lastRefillTime = parseInt(localStorage.getItem('last_refill_time')) || Date.now();
 
 const quizDatabase = {
     'Basics of Accounting': ['Accounting Equation', 'Journal Entry', 'Ledger', 'Trial Balance','Adjustment','Worksheet', 'Financial Statement'],
@@ -482,94 +880,132 @@ const quizDatabase = {
     'Trading Accounting': ['Inventory', 'Purchase & Sales', 'Cost of Goods Sold'],
     'Tax Accounting': ['VAT (PPN)', 'Income Tax', 'Tax Report'],
     'Government Accounting': ['Public Fund', 'Budgeting', 'State Assets']
-};
+};// --- LOGIKA DAILY LOGIN ---
 
-// ==========================================
-// 2. NAVIGASI UTAMA (PERBAIKAN)
-// ==========================================
-function showPage(pageId) {
-    const overlay = document.getElementById('loading-overlay');
-    const globalHeader = document.getElementById('global-profile-header');
+function updateDailyLoginUI() {
+    // Mengambil hari saat ini (0 = Minggu, 1 = Senin, ..., 6 = Sabtu)
+    // Kita sesuaikan dengan data-day (1 = Senin, ..., 7 = Minggu)
+    let today = new Date().getDay(); 
+    const currentDayIndex = today === 0 ? 7 : today; // Ubah Minggu dari 0 ke 7
+
+    const cards = document.querySelectorAll('.reward-card');
+    const claimBtn = document.getElementById('claimRewardBtn');
     
-    if (overlay) overlay.classList.remove('loading-hidden');
+    // Cek apakah user sudah klaim hari ini di localStorage
+    const lastClaimDate = localStorage.getItem('last_claim_date');
+    const todayDateString = new Date().toDateString();
 
-    setTimeout(() => {
-        // Logika Header
-        if (globalHeader) {
-            globalHeader.style.display = (pageId === 'help-page') ? 'none' : 'flex';
-        }
-
-        // Sembunyikan semua halaman
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    cards.forEach(card => {
+        const day = parseInt(card.getAttribute('data-day'));
         
-        // Tampilkan halaman target
-        const target = document.getElementById(pageId);
-        if (target) {
-            target.classList.add('active');
-        } else {
-            console.error("Page ID tidak ditemukan: " + pageId);
-        }
+        // Reset class
+        card.classList.remove('active-day', 'claimed');
 
-        // Update Status Menu Active
-        document.querySelectorAll('.menu-container div').forEach(item => {
-            item.classList.remove('active');
-            const action = item.getAttribute('onclick');
-            if (action && action.includes(pageId)) {
-                item.classList.add('active');
+        if (day < currentDayIndex) {
+            card.classList.add('claimed'); // Hari yang sudah lewat
+        } else if (day === currentDayIndex) {
+            if (lastClaimDate === todayDateString) {
+                card.classList.add('claimed'); // Sudah klaim hari ini
+                claimBtn.disabled = true;
+                claimBtn.innerText = "Sudah Diambil";
+            } else {
+                card.classList.add('active-day'); // Siap diklaim
+                claimBtn.disabled = false;
+                claimBtn.innerText = "Ambil Hadiah";
             }
-        });
-
-        if (pageId === 'report-page') renderReport();
-        if (overlay) overlay.classList.add('loading-hidden');
-    }, 300);
+        }
+    });
 }
 
-// ==========================================
-// 3. LOGIKA MODAL & INITIALIZATION
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    // Perbaikan Tombol Agree
-    const welcomeModal = document.getElementById('welcomeModal');
-    const closeBtn = document.getElementById('closeBtn');
-    const hasSeenWarning = localStorage.getItem('seenWarning');
-
-    if (!hasSeenWarning && welcomeModal) {
-        welcomeModal.style.display = 'flex';
-    } else if (welcomeModal) {
-        welcomeModal.style.display = 'none';
-    }
-
-    if (closeBtn) {
-        closeBtn.onclick = () => {
-            welcomeModal.style.display = 'none';
-            localStorage.setItem('seenWarning', 'true');
-        };
-    }
-
-    // Init sistem lainnya
-    refreshCurrencyUI();
-    updateDailyLoginUI();
-    updateEnergySystem();
-    updateGreeting();
-    setInterval(updateEnergySystem, 1000);
-    setInterval(updateDigitalClock, 1000);
-});
-
-// ==========================================
-// 4. SISTEM MATERI & QUIZ
-// ==========================================
-function selectMaterial(name) {
-    // Batasan Materi Beta
-    const allowed = ['Basics of Accounting'];
-    if (!allowed.includes(name)) {
-        alert("Materi ini masih terkunci di versi Beta!");
+function claimDailyReward() {
+    const activeCard = document.querySelector('.reward-card.active-day');
+    
+    if (!activeCard) {
+        alert("Tidak ada hadiah yang bisa diambil saat ini!");
         return;
     }
 
+    // Ambil nilai hadiah
+    const amount = parseInt(activeCard.querySelector('.reward-amount').innerText);
+    const isGem = activeCard.classList.contains('special');
+
+    // Proses Tambah Saldo
+    if (isGem) {
+        userGems += amount;
+        showFeedback("success", `Selamat! +${amount} Gem didapatkan!`);
+    } else {
+        userCoins += amount;
+        showFeedback("success", `Selamat! +${amount} Koin didapatkan!`);
+    }
+
+    // Simpan status klaim agar tidak bisa klaim lagi hari ini
+    localStorage.setItem('last_claim_date', new Date().toDateString());
+
+    // Update UI
+    refreshCurrencyUI();
+    updateDailyLoginUI();
+}
+
+// Tambahkan fungsi feedback jika belum ada (Opsional untuk mempercantik)
+function showFeedback(status, message) {
+    // Jika kamu punya modal feedback, gunakan di sini. 
+    // Jika tidak, alert sederhana saja:
+    alert(message);
+}
+
+// Pastikan inisialisasi saldo dipanggil
+document.addEventListener('DOMContentLoaded', () => {
+    refreshCurrencyUI();
+    updateDailyLoginUI();
+});
+
+// ==========================================
+// 2. SISTEM NAVIGASI & MODAL AWAL
+// ==========================================
+function showPage(pageId) {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.remove('loading-hidden');
+
+    setTimeout(() => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const target = document.getElementById(pageId);
+        if (target) target.classList.add('active');
+
+        document.querySelectorAll('.menu-container div').forEach(item => {
+            const action = item.getAttribute('onclick');
+            item.classList.remove('active');
+            if (action && action.includes(pageId)) item.classList.add('active');
+        });
+
+        const exerciseSubs = ['material-selection-page', 'quiz-detail-page', 'case-detail-page', 'cycle-detail-page', 'quiz-running-page', 'result-page'];
+        if (exerciseSubs.includes(pageId)) {
+            document.querySelector('.exercise-feature').classList.add('active');
+        }
+        overlay.classList.add('loading-hidden');
+    }, 300);
+    if (pageId === 'report-page') {
+        renderReport();
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const hasSeenWarning = localStorage.getItem('seenWarning');
+    if (!hasSeenWarning) document.getElementById('welcomeModal').style.display = 'flex';
+    
+    document.getElementById('closeBtn').onclick = () => {
+        document.getElementById('welcomeModal').style.display = 'none';
+        localStorage.setItem('seenWarning', 'true');
+    };
+    updateEnergySystem();
+    setInterval(updateEnergySystem, 1000);
+});
+
+// ==========================================
+// 3. LOGIKA SELEKSI
+// ==========================================
+function selectMaterial(name) {
     selectedMaterialGlobal = name;
     const subCont = document.getElementById('sub-material-container');
-    if (!subCont) return;
-
     subCont.innerHTML = "";
     (quizDatabase[name] || []).forEach(sub => {
         const div = document.createElement('div');
@@ -587,8 +1023,350 @@ function selectMaterial(name) {
     showPage('quiz-detail-page');
 }
 
-// Tambahkan fungsi pendukung lainnya (updateDigitalClock, refreshCurrencyUI, dll) di bawah sini...
-// Pastikan tidak ada fungsi showPage() atau selectMaterial() lain di bawah ini.
+function selectDifficulty(el) {
+    document.querySelectorAll('.class-type span').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function selectNoQ(el) {
+    document.querySelectorAll('.NoQ-type span').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+}
+
+// ==========================================
+// 4. CORE ENGINE KUIS
+// ==========================================
+function startTimer() {
+    totalSeconds = 0;
+    clearInterval(quizTimerInterval);
+    quizTimerInterval = setInterval(() => {
+        totalSeconds++;
+        const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+        const secs = String(totalSeconds % 60).padStart(2, '0');
+        document.getElementById('quiz-timer').innerText = `${mins}:${secs}`;
+    }, 1000);
+}
+
+function startQuiz() {
+    const diff = document.querySelector('.class-type .active')?.innerText;
+    const noqText = document.querySelector('.NoQ-type .active')?.innerText;
+    const subs = document.querySelectorAll('#sub-material-container .sub-item.active');
+
+    if (!diff || !noqText || subs.length === 0) {
+        alert("Lengkapi pengaturan kuis!"); return;
+    }
+    if (energy <= 0) { alert("Energi habis!"); return; }
+
+    energy--;
+    localStorage.setItem('agent_energy', energy);
+    
+    let totalNeeded = parseInt(noqText);
+    let pool = questionDatabase.filter(q => 
+        q.difficulty === diff && 
+        q.material === selectedMaterialGlobal &&
+        Array.from(subs).map(s => s.innerText).includes(q.sub)
+    );
+
+    if (pool.length < totalNeeded) {
+        alert("Soal tidak mencukupi!"); energy++; return;
+    }
+
+    currentQuestions = pool.sort(() => 0.5 - Math.random()).slice(0, totalNeeded);
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    timePerQuestion = []; // Reset statistik waktu per soal
+    
+    startTimer();
+    showPage('quiz-running-page');
+    renderQuestion();
+}
+
+function renderQuestion() {
+    lastTimestamp = totalSeconds; // Catat detik ke berapa soal muncul
+    const q = currentQuestions[currentQuestionIndex];
+    document.getElementById('display-id').innerText = `ID: ${q.id}`;
+    document.getElementById('quiz-progress').innerText = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+    document.getElementById('display-question').innerHTML = q.question;
+    document.getElementById('next-btn').style.display = "none";
+
+    const optCont = document.getElementById('options-container');
+    optCont.innerHTML = "";
+
+    let shuffled = q.options.map((t, i) => ({t, i})).sort(() => 0.5 - Math.random());
+    shuffled.forEach((obj, idx) => {
+        const div = document.createElement('div');
+        div.className = 'option-item';
+        div.innerText = `${String.fromCharCode(65 + idx)}. ${obj.t}`;
+        div.onclick = () => {
+            userAnswers[currentQuestionIndex] = obj.i;
+            document.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
+            div.classList.add('selected');
+            document.getElementById('next-btn').style.display = "block";
+        };
+        optCont.appendChild(div);
+    });
+}
+
+// ==========================================
+// 5. FEEDBACK & RESULT
+// ==========================================
+function nextQuestion() {
+    // Hitung durasi soal ini
+    const duration = totalSeconds - lastTimestamp;
+    timePerQuestion.push(duration);
+
+    const q = currentQuestions[currentQuestionIndex];
+    const isCorrect = userAnswers[currentQuestionIndex] === q.answer;
+    
+    const overlay = document.getElementById('feedback-overlay');
+    const icon = document.getElementById('feedback-icon');
+    const status = document.getElementById('feedback-status');
+
+    // --- BAGIAN PENAMBAHAN SUARA ---
+    const audioCorrect = document.getElementById('sound-correct');
+    const audioWrong = document.getElementById('sound-wrong');
+
+    // Reset suara ke awal agar tidak telat jika diklik cepat
+    audioCorrect.pause();
+    audioCorrect.currentTime = 0;
+    audioWrong.pause();
+    audioWrong.currentTime = 0;
+
+    if (isCorrect) {
+        audioCorrect.play().catch(e => console.log("Audio play blocked")); // Memutar suara benar
+        icon.innerHTML = `<img src="image-properties/correct-image.png" style="width: 80px; height: 80px;">`; 
+        status.innerHTML = "Correct!"; 
+        status.style.color = "#28a745";
+    } else {
+        audioWrong.play().catch(e => console.log("Audio play blocked")); // Memutar suara salah
+        icon.innerHTML = `<img src="image-properties/wrong-image.png" style="width: 80px; height: 80px;">`;
+        status.innerText = "Wrong!"; 
+        status.style.color = "#dc3545";
+    }
+    // -------------------------------
+
+    overlay.style.display = "flex";
+
+
+    overlay.style.display = "flex";
+    if (isCorrect) {
+        icon.innerHTML = `<img src="image-properties/correct-image.png" style="width: 80px; height: 80px;">`; status.innerText = "Correct!"; status.style.color = "#28a745";
+    } else {
+        icon.innerHTML = `<img src="image-properties/wrong-image.png" style="width: 80px; height: 80px;">`; status.innerText = "Wrong!"; status.style.color = "#dc3545";
+    }
+}
+
+function closeFeedback() {
+    document.getElementById('feedback-overlay').style.display = "none";
+    if (currentQuestionIndex < currentQuestions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+    } else {
+        finishQuiz();
+    }
+}
+
+
+
+// ==========================================
+// 6. ENERGY SYSTEM
+// ==========================================
+function updateEnergySystem() {
+    const now = Date.now();
+    if (energy < MAX_ENERGY) {
+        const passed = Math.floor((now - lastRefillTime) / 1000);
+        if (passed >= REFILL_TIME) {
+            const regen = Math.floor(passed / REFILL_TIME);
+            energy = Math.min(MAX_ENERGY, energy + regen);
+            lastRefillTime += regen * REFILL_TIME * 1000;
+            localStorage.setItem('agent_energy', energy);
+            localStorage.setItem('last_refill_time', lastRefillTime);
+        }
+    } else { lastRefillTime = now; }
+    renderEnergyUI();
+}
+
+function renderEnergyUI() {
+    const energyText = document.getElementById('energy-count');
+    const timerText = document.getElementById('energy-refill-timer');
+    if(!energyText) return;
+    energyText.innerText = `${energy}/${MAX_ENERGY}`;
+    if (energy < MAX_ENERGY) {
+        const remaining = REFILL_TIME - Math.floor((Date.now() - lastRefillTime) / 1000);
+        const m = Math.floor(remaining / 60);
+        const s = remaining % 60;
+        timerText.innerText = `+1 in ${m}:${s < 10 ? '0' : ''}${s}`;
+    } else { timerText.innerText = "Full"; }
+    document.getElementById('main-play-btn').disabled = (energy <= 0);
+}
+///--------------------------------------------------
+/// LEARNING SETTINGS (PERBAIKAN AUTO-UNLOCK)
+///--------------------------------------------------
+let activeLevel = 0;
+
+// 1. Fungsi Render Level (Otomatis deteksi progres)
+function renderLearningPath() {
+    // Ambil level yang sudah terbuka (default 1)
+    const unlockedLevel = parseInt(localStorage.getItem('unlockedLevel')) || 1;
+    
+    // TARGETKAN HANYA lingkaran di Learning Path
+    const levels = document.querySelectorAll('.level-node');
+
+    levels.forEach((node, index) => {
+        const levelNum = index + 1;
+
+        // Bersihkan class lama agar tidak bentrok
+        node.classList.remove('locked', 'current-active');
+
+        if (levelNum > unlockedLevel) {
+            // JIKA TERKUNCI: Tambahkan class locked
+            node.classList.add('locked');
+        } else if (levelNum === unlockedLevel) {
+            // JIKA AKTIF: Tambahkan class current-active
+            node.classList.add('current-active');
+        } else {
+            // JIKA SUDAH SELESAI
+            node.classList.add('completed');
+        }
+    });
+}
+// 2. Fungsi Membuka Modal Preview
+function openLevelPreview(num, name, diff, obj) {
+    const unlockedLevel = parseInt(localStorage.getItem('unlockedLevel')) || 1;
+    
+    // Keamanan tambahan: Jangan buka modal jika level terkunci
+    if (num > unlockedLevel) {
+        alert("🔒 Selesaikan level sebelumnya!");
+        return;
+    }
+
+    activeLevel = num;
+    document.getElementById('preview-level-name').innerText = `Level ${num}: ${name}`;
+    document.getElementById('preview-objective').innerText = obj;
+    
+    const diffTag = document.getElementById('preview-difficulty');
+    diffTag.innerText = diff;
+    
+    if(diff === 'Easy') diffTag.style.backgroundColor = '#28a745';
+    else if(diff === 'Medium') diffTag.style.backgroundColor = '#ffc107';
+    else diffTag.style.backgroundColor = '#dc3545';
+
+    document.getElementById('levelPreviewModal').style.display = 'flex';
+}
+
+// 3. Fungsi Start Level Dinamis
+function startLevel() {
+    // Akan otomatis mencari file level-1.html, level-2.html, dst
+    window.location.href = `level-${activeLevel}.html`;
+}
+
+function closeLevelPreview() {
+    document.getElementById('levelPreviewModal').style.display = 'none';
+}
+
+// 4. Inisialisasi Saat Load
+document.addEventListener('DOMContentLoaded', () => {
+    // Jalankan render path
+    renderLearningPath();
+
+    // Logika Parameter URL (Cek apakah user baru balik dari belajar)
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetTab = urlParams.get('tab');
+
+    if (targetTab === 'learning') {
+        // Pastikan ID 'test-page' adalah ID halaman tempat Level-level kamu berada
+        showPage('test-page'); 
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
+///REFRESH BETA///
+function resetProgres() {
+    if(confirm("Yakin ingin reset semua progres ke Level 1?")) {
+        localStorage.setItem('unlockedLevel', 1);
+        location.reload(); // Refresh halaman untuk melihat perubahan
+    }
+}
+
+///----------------------------------------///
+///-----------REPORT PAGE LOGIC------------///
+///----------------------------------------///
+
+// 1. Fungsi Utama untuk merender data ke UI
+function renderReport() {
+    // Ambil data dari localStorage
+    const answered = parseInt(localStorage.getItem('totalAnswered')) || 0;
+    const correct = parseInt(localStorage.getItem('totalCorrect')) || 0;
+    const sessions = parseInt(localStorage.getItem('trainingSessions')) || 0;
+    const wrong = Math.max(0, answered - correct);
+
+    // Hitung Persentase Correct Rate
+    const rate = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+
+    // Update Elemen Teks (Gunakan ID yang sesuai dengan CSS/HTML kamu)
+    const elCorrect = document.getElementById('total-correct');
+    const elWrong = document.getElementById('total-wrong');
+    const elSessions = document.getElementById('training-sessions');
+    const elRateText = document.getElementById('correct-rate-text');
+
+    if(elCorrect) elCorrect.innerText = correct;
+    if(elWrong) elWrong.innerText = wrong;
+    if(elSessions) elSessions.innerText = sessions;
+    if(elRateText) elRateText.innerText = rate + "%";
+
+    // 2. Update Grafik Lingkaran (Conic Gradient)
+    // Kita gunakan ID 'correct-rate-circle' sesuai CSS .circle-progress kamu
+    const circle = document.getElementById('correct-rate-circle');
+    if(circle) {
+        // Gunakan persentase (%) agar lebih mudah daripada derajat (deg)
+        circle.style.background = `conic-gradient(var(--primary) ${rate}%, #e2e8f0 0%)`;
+    }
+
+    // 3. Render Grafik Batang (Bar Chart)
+    const barChart = document.getElementById('level-bar-chart');
+    if(barChart) {
+        // Dummy data harian (Bisa kamu ganti dengan data real nanti)
+        const days = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+        barChart.innerHTML = days.map(day => {
+            // Kita buat tinggi bar berdasarkan progress (sementara random agar terlihat)
+            const height = Math.floor(Math.random() * 70) + 10; 
+            return `
+                <div class="bar-wrapper">
+                    <div class="bar" style="height: ${height}%"></div>
+                    <span class="bar-label">${day}</span>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+// 4. Fungsi untuk menyimpan hasil kuis (Panggil ini saat kuis selesai)
+function saveTrainingResult(correctAnswers, totalQuestions) {
+    let totalAnswered = parseInt(localStorage.getItem('totalAnswered')) || 0;
+    let totalCorrect = parseInt(localStorage.getItem('totalCorrect')) || 0;
+    let trainingSessions = parseInt(localStorage.getItem('trainingSessions')) || 0;
+
+    localStorage.setItem('totalAnswered', totalAnswered + totalQuestions);
+    localStorage.setItem('totalCorrect', totalCorrect + correctAnswers);
+    localStorage.setItem('trainingSessions', trainingSessions + 1);
+    
+    // Setelah simpan, langsung render ulang agar data fresh
+    renderReport();
+}
+
+// 5. Inisialisasi saat halaman pertama kali dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    renderReport();
+});
+
+// 6. SOLUSI PENTING: Panggil renderReport setiap kali pindah ke tab Report
+// Misal kamu punya fungsi pindah halaman:
+function goToPage(pageId) {
+    // ... kode sembunyikan semua halaman ...
+    
+    if (pageId === 'report-page') {
+        renderReport(); // Paksa hitung ulang data saat halaman dibuka
+    }
+}
 </script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
