@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 1 - Actavia Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="level-1.css">
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <header class="header-container">
+        <div class="header-content">
+            <img src="image-resource-pages/actavia-project-brand.png" alt="Logo" class="brand-logo">
+            <div class="level-badge">LEVEL 1</div>
+        </div>
+    </header>
+
+    <main class="main-display">
+        <div id="materi-render-area">
+            <div class="placeholder-text">Selesaikan perkenalan untuk memulai...</div>
+        </div>
+    </main>
+
+    <div id="materi-source" style="display: none;">
+        <div class="step">
+            <h3 class="s-title">Learning 1.1</h3>
+            <h4 class="s-sub">A. Pengertian Dasar</h4>
+            <p class="s-p">Akuntansi adalah sistem informasi yang menghasilkan laporan kepada pihak-pihak yang berkepentingan mengenai aktivitas ekonomi dan kondisi perusahaan.</p>
+            <p class="s-p">Ada 3 aktivitas utama dalam akuntansi:</p>
+            <p class="s-p">1. Identifikasi: Mengenali peristiwa ekonomi yang relevan bagi bisnis.</p>
+            <p class="s-p">2. Pencatatan: Mengolah data yang telah diidentifikasi secara sistematis.</p>
+            <p class="s-p">3. Komunikasi: Menyampaikan informasi tersebut melalui laporan keuangan.</p>
+        </div>
+        <div class="step">
+            <h3 class="s-title">Learning 1.2</h3>
+            <h4 class="s-sub">B. Pihak yang Menggunakan</h4>
+            <p class="s-p">Informasi akuntansi digunakan oleh berbagai pihak untuk pengambilan keputusan. Adapun pihak tersebut terbagi menjadi dua jenis :</p>
+            <p class="s-p">1. Pihak Internal, yaitu pihak yang berada didalam entitas atau perusahaan seperti Manajer, Direktur, dan Pemilik Perusahaan.</p>
+            <p class="s-p">2. Pihak Eksternal, yaitu pihak yang berada diluar perusahaan seperti Investor, Kreditor (Bank), dan Instansi Pemerintah.</p>
+        </div>
+        <div class="step">
+            <h3 class="s-title">Learning 1.3</h3>
+            <h4 class="s-sub">C. Standar Akuntansi</h4>
+            <p class="s-p">Dalam membuat laporan yang benar dan berkualitas, tentu dibutuhkan prosedur atau standar yang disepakati bersama yang bernama Standar Akuntansi. Sampai saat ini, Standar Akuntansi terbagi menjadi 2 yaitu :</p>
+            <p class="s-p">1. International Financial Reporting Standards (IFRS), standar ini dikeluarkan oleh International Accounting Standards Board (IASB). Standar ini dirancang untuk menciptakan bahasa akuntansi yang seragam di seluruh dunia. IFRS digunakan lebih dari 140 negara, termasuk Uni Eropa, Australia, Kanada, dan Indonesia (melalui konvergensi SAK). Filosofi dari IFRS sendiri adalah Principle-based (berbasis prinsip). Fokusnya adalah pada substansi ekonomi sebuah transaksi daripada sekadar mengikuti aturan tertulis yang kaku.</p>
+            <p class="s-p">2. Generally Accepted Accounting Procedure (GAAP), standar ini dikeluarkan oleh Financial Accounting Standards Board (FASB) di Amerika Serikat. Digunakan ole perusahaan-perusahaan yang berbasis di Amerika Serikat atau yang melantai di bursa saham AS, standar ini berprinsip Rules-based (berbasis aturan), menjadikan GAAP sangat mendetail dengan banyak aturan khusus untuk berbagai industri guna meminimalisir celah interpretasi.</p>
+            <p class="s-p">Meski begitu, dunia Akuntansi sekarang lebih condong ke IFRS. Oleh karena itu, mulai sekarang kita akan belajar menggunakan standar IFRS.</p>
+        </div>
+    </div>
+
+    <div id="nav-group" class="nav-container">
+        <button id="btn-prev" class="btn-nav btn-secondary"><i class="fa-solid fa-chevron-left"></i></button>
+        <button id="btn-next" class="btn-nav btn-primary">Lanjut <i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div id="vian-overlay" class="modal-overlay">
+        <div class="onboarding-card">
+            <div class="onboarding-content">
+                <div class="onboarding-mascot">
+                    <img src="image-resource-pages/vian-welcome-pose.png" alt="VIAN" class="robot-img">
+                </div>
+                <div class="onboarding-text">
+                    <h2 id="on-title"></h2>
+                    <p id="on-p1"></p>
+                    <p id="on-p2"></p>
+                    <button id="btn-start" class="btn-start">Mulai Belajar <i class="fa-solid fa-rocket"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('vian-overlay'),
+          onTitle = document.getElementById('on-title'),
+          onP1 = document.getElementById('on-p1'),
+          onP2 = document.getElementById('on-p2'),
+          btnStart = document.getElementById('btn-start'),
+          renderArea = document.getElementById('materi-render-area'),
+          navGroup = document.getElementById('nav-group'),
+          btnNext = document.getElementById('btn-next'),
+          btnPrev = document.getElementById('btn-prev'),
+          progressBar = document.getElementById('progress-bar'),
+          steps = document.querySelectorAll('#materi-source .step');
+
+    let currentStep = 0, timeouts = [], userScore = 0;
+    let isQuizMode = false;
+    let currentQuizIdx = 0;
+
+    const quizData = [
+        {
+            q: "Apa 3 aktivitas utama dalam akuntansi secara berurutan?",
+            o: ["Pencatatan, Pelaporan, Analisis", "Identifikasi, Pencatatan, Komunikasi", "Input, Proses, Output", "Identifikasi, Analisis, Audit", "Pencatatan, Komunikasi, Evaluasi"],
+            a: 1
+        },
+        {
+            q: "Siapa yang termasuk dalam pihak internal pengguna informasi akuntansi?",
+            o: ["Investor", "Kreditor", "Instansi Pemerintah", "Manajer dan Pemilik", "Banker"],
+            a: 3
+        },
+        {
+            q: "Standar akuntansi IFRS dikeluarkan oleh lembaga apa?",
+            o: ["FASB", "IAI", "IASB", "OJK", "World Bank"],
+            a: 2
+        },
+        {
+            q: "Apa filosofi utama dari standar IFRS?",
+            o: ["Rules-based", "Market-based", "Principle-based", "Law-based", "Tax-based"],
+            a: 2
+        },
+        {
+            q: "Manakah pernyataan yang benar mengenai GAAP?",
+            o: ["Digunakan di seluruh dunia", "Berbasis prinsip", "Dikeluarkan oleh IASB", "Sangat mendetail (Rules-based)", "Sama persis dengan IFRS"],
+            a: 3
+        }
+    ];
+
+    const introData = {
+        t: "Halo, Calon Akuntan!",
+        p1: "Selamat datang di Learning Mode Actavia Project.",
+        p2: "Aku VIAN, asisten virtualmu. Mari kita mulai belajarnya!"
+    };
+
+    function type(el, text, speed, cb) {
+        if(!el) return;
+        let i = 0; el.innerHTML = ""; el.classList.add('typing');
+        function write() {
+            if(i < text.length) {
+                el.innerHTML += text.charAt(i++);
+                timeouts.push(setTimeout(write, speed));
+            } else {
+                el.classList.remove('typing');
+                if(cb) cb();
+            }
+        }
+        write();
+    }
+
+    function clearTimeouts() {
+        timeouts.forEach(t => clearTimeout(t));
+        timeouts = [];
+    }
+
+    function updateProgress(customPerc) {
+        const perc = customPerc !== undefined ? customPerc : ((currentStep + 1) / (steps.length + 1)) * 100;
+        progressBar.style.width = perc + "%";
+    }
+
+    function renderQuiz() {
+        isQuizMode = true;
+        navGroup.style.display = "none";
+        const data = quizData[currentQuizIdx];
+        
+        renderArea.innerHTML = `
+            <div class="quiz-container">
+                <span class="quiz-badge">Pertanyaan ${currentQuizIdx + 1}/5</span>
+                <h3 class="quiz-question">${data.q}</h3>
+                <div class="quiz-options">
+                    ${data.o.map((opt, i) => `<button class="opt-btn" onclick="checkAnswer(${i})">${opt}</button>`).join('')}
+                </div>
+            </div>
+        `;
+        updateProgress(((steps.length + currentQuizIdx) / (steps.length + 5)) * 100);
+    }
+
+    window.checkAnswer = (idx) => {
+        if(idx === quizData[currentQuizIdx].a) userScore++;
+        
+        currentQuizIdx++;
+        if(currentQuizIdx < quizData.length) {
+            renderQuiz();
+        } else {
+            showResult();
+        }
+    };
+
+    function showResult() {
+    const isPassed = userScore >= 4;
+    const statusClass = isPassed ? 'res-success' : 'res-fail';
+    const icon = isPassed ? 'fa-circle-check' : 'fa-circle-xmark';
+    const title = isPassed ? 'Level 1 Selesai!' : 'Coba Lagi, Yuk!';
+    const msg = isPassed ? 'Kamu sudah memahami dasar-dasar akuntansi dengan sangat baik.' : 'Sepertinya kamu harus mengulang materi ini untuk lebih paham.';
+
+    // Logic Tombol Dinamis
+    let actionButtons = "";
+    if (isPassed) {
+        // Jika Lulus: Muncul tombol Berhasil (Membuka Level 2)
+        actionButtons = `
+            <button class="btn-retry" style="background: #28a745; color: white; border: none;" onclick="unlockNextLevel()">
+                Lanjut & Kembali <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        `;
+    } else {
+        // Jika Gagal: Muncul tombol Ulangi dan Kembali (Level tetap terkunci)
+        actionButtons = `
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button class="btn-retry" onclick="location.reload()">
+                    Ulangi <i class="fa-solid fa-rotate-right"></i>
+                </button>
+                <button class="btn-retry" style="background: #6c757d; color: white; border: none;" onclick="backToLearning()">
+                    Kembali <i class="fa-solid fa-house"></i>
+                </button>
+            </div>
+        `;
+    }
+
+    renderArea.innerHTML = `
+        <div class="result-card ${statusClass}">
+            <i class="fa-solid ${icon} res-icon"></i>
+            <h2>${title}</h2>
+            <p>${msg}</p>
+            <div class="stats-grid">
+                <div class="stat-item"><strong>${userScore}</strong><span>Benar</span></div>
+                <div class="stat-item"><strong>${5 - userScore}</strong><span>Salah</span></div>
+            </div>
+            <div style="margin-top: 20px;">
+                ${actionButtons}
+            </div>
+        </div>
+    `;
+    progressBar.style.width = "100%";
+}
+
+    function render(idx) {
+        clearTimeouts();
+        if(idx >= steps.length) {
+            renderQuiz();
+            return;
+        }
+
+        updateProgress();
+        const data = steps[idx];
+        const paras = data.querySelectorAll('.s-p');
+        renderArea.innerHTML = `<div class='m-content'><h3 id='mt'></h3><h4 id='ms'></h4><div id='mp'></div></div>`;
+
+        type(document.getElementById('mt'), data.querySelector('.s-title').innerText, 30, () => {
+            type(document.getElementById('ms'), data.querySelector('.s-sub').innerText, 20, () => {
+                let pI = 0;
+                function nextP() {
+                    if(pI < paras.length) {
+                        const rawText = paras[pI].innerText.trim();
+                        let pTag;
+                        const isList = /^\d+\./.test(rawText);
+                        if (isList) {
+                            let ol = document.getElementById('m-list-container');
+                            if (!ol) {
+                                ol = document.createElement('ol');
+                                ol.id = 'm-list-container';
+                                ol.className = 'm-ol';
+                                document.getElementById('mp').appendChild(ol);
+                            }
+                            pTag = document.createElement('li');
+                            ol.appendChild(pTag);
+                        } else {
+                            pTag = document.createElement('p');
+                            pTag.className = "m-para";
+                            document.getElementById('mp').appendChild(pTag);
+                            const oldOl = document.getElementById('m-list-container');
+                            if(oldOl) oldOl.id = ""; 
+                        }
+                        type(pTag, rawText, 10, () => { pI++; nextP(); });
+                    }
+                }
+                nextP();
+            });
+        });
+
+        btnPrev.style.visibility = idx === 0 ? "hidden" : "visible";
+        navGroup.classList.add('active');
+    }
+
+    setTimeout(() => {
+        type(onTitle, introData.t, 40, () => {
+            type(onP1, introData.p1, 20, () => {
+                type(onP2, introData.p2, 20, () => btnStart.classList.add('show'));
+            });
+        });
+    }, 800);
+
+    btnStart.onclick = () => {
+        overlay.classList.add('hide');
+        setTimeout(() => { 
+            overlay.style.display = 'none'; 
+            render(currentStep); 
+        }, 500);
+    };
+
+    btnNext.onclick = () => { currentStep++; render(currentStep); };
+    btnPrev.onclick = () => { if(currentStep > 0) { currentStep--; render(currentStep); }};
+});
+function showQuizResult(score, passingScore) {
+    const resultArea = document.getElementById('quiz-result-section'); // Sesuaikan ID-mu
+    let buttonsHTML = "";
+
+    if (score >= passingScore) {
+        // JIKA BERHASIL
+        buttonsHTML = `
+            <h3>Luar Biasa! Kamu Lulus.</h3>
+            <button onclick="unlockNextLevel()" class="play-button">Kembali ke Learning Page</button>
+        `;
+    } else {
+        // JIKA GAGAL
+        buttonsHTML = `
+            <h3>Yah, Skor Belum Cukup.</h3>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="restartLevel()" class="play-button" style="background: #ffc107">Ulangi</button>
+                <button onclick="goToPage('test-page')" class="play-button" style="background: #6c757d">Kembali</button>
+            </div>
+        `;
+    }
+    resultArea.innerHTML = buttonsHTML;
+}
+// SIMPAN DI BAGIAN ATAS FILE JS
+let userProgress = parseInt(localStorage.getItem('unlockedLevel')) || 1;
+
+// Fungsi untuk menggambar ulang peta belajar (Panggil saat dashboard loading)
+function updateLearningPath() {
+    const levels = document.querySelectorAll('.level-node');
+    levels.forEach((node, index) => {
+        const levelNum = index + 1;
+        node.classList.remove('locked', 'current-active');
+
+        if (levelNum < userProgress) {
+            node.innerHTML = "✓"; // Level selesai
+            node.style.background = "#28a745";
+        } else if (levelNum === userProgress) {
+            node.innerHTML = levelNum; // Level sekarang
+            node.classList.add('current-active');
+        } else {
+            node.classList.add('locked'); // Level terkunci
+        }
+    });
+}
+
+function renderLearningPath() {
+    // Ambil progres terbaru (contoh: jika nilainya 2, maka level 1 dan 2 terbuka)
+    const unlockedLevel = parseInt(localStorage.getItem('unlockedLevel')) || 1;
+
+    // Ambil semua elemen yang punya class 'level-node'
+    const nodes = document.querySelectorAll('.level-node');
+
+    nodes.forEach((node, index) => {
+        const levelNum = index + 1; // Level 1, 2, 3...
+
+        if (levelNum <= unlockedLevel) {
+            // --- LOGIKA LEVEL TERBUKA ---
+            node.classList.remove('locked');
+            node.classList.add('active');
+            
+            // Beri tanda centang jika sudah melewati level tersebut
+            if (levelNum < unlockedLevel) {
+                node.innerHTML = '<i class="fa-solid fa-check"></i>';
+            } else {
+                node.innerHTML = levelNum;
+                node.classList.add('current'); // Beri efek bercahaya pada level sekarang
+            }
+
+            // Fungsi klik: pindah ke file level yang sesuai
+            node.onclick = () => {
+                window.location.href = `level-${levelNum}.html`;
+            };
+
+        } else {
+            // --- LOGIKA LEVEL TERKUNCI ---
+            node.classList.add('locked');
+            node.classList.remove('active', 'current');
+            node.innerHTML = '<i class="fa-solid fa-lock"></i>';
+            node.onclick = null; // Tidak bisa diklik
+        }
+    });
+}
+
+// Panggil fungsi saat Dashboard dibuka
+document.addEventListener('DOMContentLoaded', renderLearningPath);
+
+// Panggil fungsi saat Dashboard dimuat
+document.addEventListener('DOMContentLoaded', renderLearningPath);
+// --- FUNGSI NAVIGASI & PENYIMPANAN PROGRES ---
+// --- FUNGSI NAVIGASI & PENYIMPANAN PROGRES ---
+
+function unlockNextLevel() {
+    // 1. Ambil progres saat ini dari localStorage
+    let savedProgress = parseInt(localStorage.getItem('unlockedLevel')) || 1;
+    const currentLevel = 1; // Karena ini adalah file level-1.html
+
+    // 2. Jika level yang baru diselesaikan adalah level tertinggi, buka level 2
+    if (currentLevel >= savedProgress) {
+        localStorage.setItem('unlockedLevel', 2);
+    }
+
+    // 3. Kembali ke Dashboard dan instruksikan untuk buka tab 'learning'
+    window.location.href = 'Dashboard.html?tab=learning'; 
+}
+
+function backToLearning() {
+    // Kembali tanpa update progres (misal jika gagal kuis)
+    window.location.href = 'Dashboard.html?tab=learning'; 
+}
+
+// Mencegah user keluar tidak sengaja saat kuis sedang berlangsung
+window.onbeforeunload = function() {
+    if (isQuizMode && currentQuizIdx < quizData.length) {
+        return "Progres kuis akan hilang, yakin ingin keluar?";
+    }
+};
+
+    </script>
+</body>
+</html>
